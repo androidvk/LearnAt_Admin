@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">LearnAt Admin</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
+    <string name="learn_from_to_mentors">Learn from top mentors around the world.</string>
+    <string name="get_started_with_learnat">Get started with LearnAt</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="indias_learning_platform">India\'s online learning platform.</string>
+    <string name="get_started_to_explore_pandoras_box_of_knowledge">Get started to explore pandora\'s box of knowledge.</string>
+    <string name="signin_signup">Sign Up</string>
+    <string name="enter_your_mobile">Enter your mobile number to continue.</string>
+    <string name="Continue">Continue</string>
+    <string name="OtpSentTo">Enter the OTP Sent to:-</string>
+    <string name="OTPVerification">OTP Verification</string>
+    <string name="didntreceiveotp">Didn\'t receive OTP?</string>
+
+    <string name="VerifyNContiue"><![CDATA[Verify & Continue]]></string>
+    <string name="InvalidOTP">Invalid OTP. Retry</string>
+    <string name="invalidPhoneNumber">Invalid phone number.</string>
+    <string name="sending">Sending...</string>
+    <string name="resendIn">Resend in:</string>
+    <string name="unableToSendOTP">Unable to send OTP.</string>
+    <string name="YouHaveReachedMaxLimit">You have maximum limit. Try again after 24 hrs.</string>
+    <string name="MobileNumber">Mobile number</string>
+    <string name="enterOtp">Enter full OTP!</string>
+    <string name="resend"><u>Resend OTP</u></string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="heyLearner">Hey!! Learner.</string>
+    <string name="youAreJust3StepsAwayFromLearning">You are just 3 steps away from learning.</string>
+    <string name="LetsSetupYourAccount">Let\'s setup your account.</string>
+    <string name="LetsStart">Let\'s Begin</string>
+    <string name="ChooseYourSubject">Choose your course / subject</string>
+    <string name="EnterICodeToGetCredit"><![CDATA[Enter I-Code & get 500 Credit.]]></string>
+    <string name="InstallationCode">I-Code</string>
+    <string name="WhatDoWantToLearn">What do you want to learn?</string>
+    <string name="selectCourseCategoryWhichSuitesYorNeed">Select a course category, you can also change it later.</string>
+    <string name="enterICode">Enter I - Code &amp; Get</string>
+    <string name="iCodeInfo">I-Code is one time app installation code. By entering I-Code you get credit in your wallet which can be used for purchasing courses.</string>
+    <string name="CreditAwaitingForYou">Credit awaiting for you.</string>
+    <string name="iCode">I - Code</string>
+    <string name="Apply">Apply</string>
+    <string name="enteriCode">Enter I - Code</string>
+    <string name="iDontHaveIcode">I don\'t have I - Code</string>
+    <string name="Congratulations">Congratulations!!</string>
+    <string name="CreditedToYourWallet">Credited to your wallet!!</string>
+    <string name="HaveAAccountSignIn">Have an account? <u>Sign In</u></string>
+    <string name="GeneralCompetition">General Competition</string>
+    <string name="Upcoming">Upcoming</string>
+    <string name="ContinueLearning">Continue learning...</string>
+    <string name="seeall">See all</string>
+    <string name="Popular">Popular</string>
+    <string name="Subjects">Subjects</string>
+    <string name="Mentors">Mentors</string>
+    <string name="ExploreOtherCategories">Explore other categories</string>
+    <string name="LiveClasses">⦿ Live Classes</string>
+    <string name="Logout">Logout</string>
+    <string name="Category">Category</string>
+    <string name="Courses">Courses</string>
+</resources>
