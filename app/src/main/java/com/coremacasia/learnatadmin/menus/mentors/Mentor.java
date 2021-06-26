@@ -1,13 +1,13 @@
 package com.coremacasia.learnatadmin.menus.mentors;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -16,7 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.menus.mentors.placeholder.PlaceholderContent;
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
+import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.utility.RMAP;
+import com.coremacasia.learnatadmin.utility.Reference;
+import com.google.firebase.firestore.DocumentReference;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -57,15 +61,16 @@ public class Mentor extends Fragment {
     }
 
     private Button bAddMentor;
+    private RecyclerView rvMentor;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mentor_list, container, false);
-        bAddMentor=view.findViewById(R.id.button7);
+        bAddMentor = view.findViewById(R.id.button7);
+        rvMentor = view.findViewById(R.id.rvMentor);
         // Set the adapter
-        if (view instanceof RecyclerView) {
 
-        }
         return view;
     }
 
@@ -75,10 +80,31 @@ public class Mentor extends Fragment {
         bAddMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Mentor df_add_mentor=DF_Add_Mentor.newInstance();
+                DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance();
                 df_add_mentor.show(getActivity().getSupportFragmentManager(), DF_Add_Mentor.TAG);
             }
         });
+        setRecyclerViewMentor();
 
+    }
+    private CommonDataViewModel viewModel;
+    private DocumentReference commonListRef;
+    private void setRecyclerViewMentor() {
+        commonListRef=Reference.superRef(RMAP.list);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(),2);
+        MentorsAdapter adapter = new MentorsAdapter(getActivity());
+        rvMentor.setLayoutManager(linearLayoutManager);
+        rvMentor.setAdapter(adapter);
+        rvMentor.setNestedScrollingEnabled(false);
+
+        viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
+        viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
+                new Observer<CommonDataModel>() {
+                    @Override
+                    public void onChanged(CommonDataModel commonDataModel) {
+                        adapter.setDataModel(commonDataModel);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
     }
 }

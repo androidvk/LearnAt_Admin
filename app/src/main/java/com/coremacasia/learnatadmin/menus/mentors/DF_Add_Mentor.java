@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,7 +23,6 @@ import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddMentorBinding;
 import com.coremacasia.learnatadmin.menus.category.CategoryHelper;
-import com.coremacasia.learnatadmin.menus.category.CategoryList;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.coremacasia.learnatadmin.utility.kMap;
@@ -59,7 +57,7 @@ public class DF_Add_Mentor extends DialogFragment implements AdapterView.OnItemS
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         binding = DialogAddMentorBinding.inflate(LayoutInflater.from(inflater.getContext()));
         eName = binding.editTextTextPersonName4;
         eQualification = binding.editTextTextPersonName8;
@@ -156,47 +154,4 @@ public class DF_Add_Mentor extends DialogFragment implements AdapterView.OnItemS
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    /*public class CatHelper {
-        String id;
-
-        public CatHelper(String id, String name, String thumbnail) {
-            this.id = id;
-            this.name = name;
-            this.thumbnail = thumbnail;
-        }
-
-        String name;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setThumbnail(String thumbnail) {
-            this.thumbnail = thumbnail;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getThumbnail() {
-            return thumbnail;
-        }
-
-        String thumbnail;
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }*/
 }

@@ -58,4 +58,7 @@ public class RMAP {
     public static String list="list";
     public static String comp_exam="comp_exam";
     public static String courses_all="courses_all";
+    public static String all_courses="all_courses";
+    public static String xtra="xtra";
+    public static String course_id="course_id";
 }

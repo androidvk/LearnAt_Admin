@@ -21,4 +21,11 @@ public class Reference {
         return superRef().document(docId);
     }
 
+    public static CollectionReference superCourseRef(String CAT){
+        return reference.collection("c_"+CAT);
+    }
+    public static DocumentReference superCourseRef(String CAT,String courseId){
+        return superCourseRef(CAT).document(courseId);
+    }
+
 }

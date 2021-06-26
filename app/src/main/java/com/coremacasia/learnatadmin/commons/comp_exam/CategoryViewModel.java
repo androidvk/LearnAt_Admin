@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.commons;
+package com.coremacasia.learnatadmin.commons.comp_exam;
 
 import android.util.Log;
 
@@ -6,20 +6,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.google.firebase.firestore.DocumentReference;
 
-public class CommonDataViewModel extends ViewModel implements CommonListRepo.OnFirestoreTaskComplete {
+public class CategoryViewModel extends ViewModel implements CompExamRepo.OnFirestoreTaskComplete {
     private static final String TAG = "CommonListViewModel";
-    private CommonListRepo commonListRepo = new CommonListRepo(this);
+    private CompExamRepo CompExamRepo = new CompExamRepo(this);
 
     public LiveData<CommonDataModel> getCommonMutableLiveData(DocumentReference documentReference) {
-        commonListRepo.getCommonData(documentReference);
+        CompExamRepo.getCommonData(documentReference);
         return commonMutableLiveData;
     }
 
     private MutableLiveData<CommonDataModel> commonMutableLiveData = new MutableLiveData<>();
 
-    public CommonDataViewModel() {
+    public CategoryViewModel() {
         //firebaseRepo.getCommonData(documentReference);
     }
 

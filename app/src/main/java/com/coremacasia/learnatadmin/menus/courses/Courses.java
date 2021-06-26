@@ -1,12 +1,10 @@
 package com.coremacasia.learnatadmin.menus.courses;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +16,6 @@ import android.widget.Spinner;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
-import com.coremacasia.learnatadmin.menus.category.CategoryAdapter;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;

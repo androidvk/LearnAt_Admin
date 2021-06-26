@@ -17,20 +17,28 @@ public class CommonDataModel {
     }
 
     private ArrayList<CategoryHelper> category;
-    private ArrayList<CourseHelper> courses;
 
-    public ArrayList<CourseHelper> getCourses() {
-        return courses;
-    }
-/*    public ArrayList<SubjectHelper> getSubjects() {
-        return subjects;
+    private ArrayList<String> course_id;
+
+    public ArrayList<String> getCourse_id() {
+        return course_id;
     }
 
-    private ArrayList<SubjectHelper> subjects;
+    public ArrayList<CourseHelper> getAll_courses() {
+        return all_courses;
+    }
+
+    private ArrayList<CourseHelper> all_courses;
+
     private ArrayList<MentorHelper> mentors;
 
+    private ArrayList<SubjectHelper> all_subjects;
+
+    public ArrayList<SubjectHelper> getAll_subjects() {
+        return all_subjects;
+    }
 
     public ArrayList<MentorHelper> getMentors() {
         return mentors;
-    }*/
+    }
 }

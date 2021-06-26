@@ -1,15 +1,25 @@
 package com.coremacasia.learnatadmin.menus.subjects;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentSubjectsBinding;
+import com.coremacasia.learnatadmin.menus.category.CatDetail.DF_Add_Subject;
 import com.coremacasia.learnatadmin.menus.subjects.placeholder.PlaceholderContent.PlaceholderItem;
+import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,11 +27,15 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHolder> {
+    private static final String TAG = "SubjectsAdapter";
+    private ArrayList<SubjectHelper> list = new ArrayList<>();
 
-    private final List<PlaceholderItem> mValues;
+    private CommonDataModel commonDataModel;
+    private Context activity;
 
-    public SubjectsAdapter(List<PlaceholderItem> items) {
-        mValues = items;
+    public SubjectsAdapter(Context activity) {
+
+        this.activity = activity;
     }
 
     @Override
@@ -33,21 +47,50 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
+        SubjectHelper helper = list.get(position);
+        holder.tCode.setText( helper.getCategory() + " | " + helper.getSubject_code());
+        holder.tDesc.setText(helper.getDesc());
+        holder.tTitle.setText(helper.getTitle());
+        new ImageSetterGlide().defaultImg(holder.context,helper.getIcon(),holder.imageView);
+        holder.mainView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = ((AppCompatActivity) activity).getSupportFragmentManager();
+                DF_Add_Subject df_add_subject = new DF_Add_Subject(helper.getCategory(), 10, helper, position, list);
+                df_add_subject.show(manager, DF_Add_Subject.TAG);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return list.size();
+    }
+
+    public void setDataModel(CommonDataModel commonDataModel) {
+        list = commonDataModel.getAll_subjects();
+        this.commonDataModel = commonDataModel;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private static final String TAG = "ViewHolder";
+        private TextView tDesc, tCode, tAllDetails, tTitle;
+        private ImageView imageView;
+        private Context context;
+        private View mainView;
 
         public ViewHolder(FragmentSubjectsBinding binding) {
             super(binding.getRoot());
+            tCode = binding.textView30;
+            tDesc = binding.textView31;
+            tAllDetails = binding.textView32;
+            imageView = binding.imageView12;
+            tTitle = binding.textView40;
+            context = binding.getRoot().getContext();
+            mainView = binding.mainView;
+
 
         }
 
-       }
+    }
 }

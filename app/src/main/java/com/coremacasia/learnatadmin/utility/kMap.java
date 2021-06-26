@@ -224,4 +224,11 @@ public class kMap {
     public static String mentor_id="mentor_id";
     public static String mentors="mentors";
     public static String list="list";
+    public static String course_id="course_id";
+    public static String subject_id="subject_id";
+    public static String is_live="is_live";
+    public static String is_individual="is_individual";
+    public static String is_visible="is_visible";
+    public static String courses="courses";
+    public static String updated_by="updated_by";
 }

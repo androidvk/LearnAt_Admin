@@ -17,6 +17,7 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/Mentors" />
         <item
+            android:icon="@drawable/ic_backspace_black_24dp"
             android:id="@+id/nav_subjects"
             android:title="@string/Subjects" />
 

@@ -7,18 +7,28 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
+import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.commons.all_courses.AllCoursesViewModel;
+import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.ActivityMainBinding;
 import com.coremacasia.learnatadmin.start_items.Splash;
+import com.coremacasia.learnatadmin.utility.RMAP;
+import com.coremacasia.learnatadmin.utility.Reference;
+import com.coremacasia.learnatadmin.utility.MyStore;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_category, R.id.nav_courses, R.id.nav_mentors
-        ,R.id.nav_subjects)
+                , R.id.nav_subjects)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -68,16 +78,45 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private FirebaseAuth auth= FirebaseAuth.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser;
+
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseUser=auth.getCurrentUser();
-        if(firebaseUser==null){
+        firebaseUser = auth.getCurrentUser();
+        if (firebaseUser == null) {
             startActivity(new Intent(MainActivity.this, Splash.class));
             finish();
+        } else {
+            getData();
         }
 
+    }
+
+    private DocumentReference commonListRef;
+    private CommonDataViewModel viewModel;
+    private AllCoursesViewModel allCoursesViewModel;
+
+
+    private void getData() {
+        commonListRef = Reference.superRef(RMAP.list);
+        viewModel = new ViewModelProvider(this).get(CommonDataViewModel.class);
+        viewModel.getCommonMutableLiveData(commonListRef).observe(MainActivity.this,
+                new Observer<CommonDataModel>() {
+                    @Override
+                    public void onChanged(CommonDataModel commonDataModel) {
+                        MyStore.setCommonData(commonDataModel);
+                    }
+                });
+
+        allCoursesViewModel=new ViewModelProvider(this).get(AllCoursesViewModel.class);
+        allCoursesViewModel.getCommonMutableLiveData(Reference.superRef(RMAP.all_courses))
+                .observe(MainActivity.this, new Observer<CourseModel>() {
+                    @Override
+                    public void onChanged(CourseModel courseModel) {
+                        MyStore.setCourseData(courseModel);
+                    }
+                });
     }
 }

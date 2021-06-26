@@ -23,7 +23,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
     public void setDataModel(CommonDataModel commonDataModel) {
         this.commonDataModel = commonDataModel;
-        list=commonDataModel.getCourses();
+        list=commonDataModel.getAll_courses();
     }
 
     public CoursesAdapter(Context context) {
@@ -33,7 +33,8 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FragmentCoursesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(FragmentCoursesBinding.inflate
+                (LayoutInflater.from(parent.getContext()), parent, false));
 
     }
 

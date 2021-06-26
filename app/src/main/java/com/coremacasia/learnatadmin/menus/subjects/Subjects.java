@@ -4,16 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.menus.subjects.placeholder.PlaceholderContent;
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
+import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.utility.RMAP;
+import com.coremacasia.learnatadmin.utility.Reference;
+import com.google.firebase.firestore.DocumentReference;
 
 /**
  * A fragment representing a list of Items.
@@ -51,6 +57,10 @@ public class Subjects extends Fragment {
         }
     }
 
+    private static final String TAG = "Subjects";
+    private CommonDataViewModel viewModel;
+    private DocumentReference commonListRef;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,13 +70,27 @@ public class Subjects extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new SubjectsAdapter(PlaceholderContent.ITEMS));
+
+
+            GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+            SubjectsAdapter adapter = new SubjectsAdapter(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(adapter);
+            //recyclerView.setNestedScrollingEnabled(false);
+
+            commonListRef = Reference.superRef(RMAP.list);
+            viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
+            viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
+                    new Observer<CommonDataModel>() {
+                        @Override
+                        public void onChanged(CommonDataModel commonDataModel) {
+                            adapter.setDataModel(commonDataModel);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
         }
+
+
         return view;
     }
 }
