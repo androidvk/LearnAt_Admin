@@ -92,11 +92,11 @@ public class Mentor extends Fragment {
     private void setRecyclerViewMentor() {
         commonListRef=Reference.superRef(RMAP.list);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(),2);
-        MentorsAdapter adapter = new MentorsAdapter(getActivity());
+        MentorsAdapter adapter = new MentorsAdapter(getActivity(), 2);
         rvMentor.setLayoutManager(linearLayoutManager);
         rvMentor.setAdapter(adapter);
         rvMentor.setNestedScrollingEnabled(false);
-
+        adapter.getFilter().filter("");
         viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
         viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
                 new Observer<CommonDataModel>() {

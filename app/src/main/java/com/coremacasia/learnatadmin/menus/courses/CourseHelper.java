@@ -1,7 +1,24 @@
 package com.coremacasia.learnatadmin.menus.courses;
 
 public class CourseHelper {
-    private String added_by,course_id,mentor_id,subject_id,thumbnail,title;
+    private String added_by;
+    private String course_id;
+    private String mentor_id;
+    private String subject_id;
+    private String thumbnail;
+    private String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    private String title;
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    private String category_id;
     private boolean is_individual,is_live,is_visible;
 
     public String getAdded_by() {

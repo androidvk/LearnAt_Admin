@@ -1,13 +1,17 @@
 package com.coremacasia.learnatadmin.menus.category.CatDetail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
@@ -35,13 +39,14 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
         list = commonDataModel.getCourse_id();
     }
 
-    public CATCourseAdapter(Context context) {
+    public CATCourseAdapter(Activity context) {
         this.context = context;
     }
 
     @Override
     public CATCourseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(FragmentCoursesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(FragmentCoursesBinding.inflate
+                (LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -56,7 +61,8 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                 } else {
                     holder.tLive.setVisibility(View.GONE);
                 }
-                new ImageSetterGlide().defaultImg(holder.context, helper.getThumbnail(), holder.imageView);
+                new ImageSetterGlide().defaultImg(holder.context, helper.getThumbnail(),
+                        holder.imageView);
 
                 ArrayList<MentorHelper> mentorList = MyStore.getCommonData().getMentors();
                 for (MentorHelper helper1 : mentorList) {
@@ -64,6 +70,26 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                         holder.tMentorName.setText(helper1.getName());
                     }
                 }
+
+                holder.bEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentManager manager = ((AppCompatActivity) context)
+                                .getSupportFragmentManager();
+                        DF_Add_Course df_add_course= DF_Add_Course.newInstance(helper.getCategory_id()
+                                ,helper);
+                        df_add_course.show(manager,DF_Add_Course.TAG);
+                    }
+                });
+
+                holder.mainView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                    }
+                });
+
                 return;
             }
         }
@@ -85,6 +111,8 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
         private TextView tTitle, tMentorName, tLive;
         private ImageView imageView;
         private Context context;
+        private View mainView;
+        private Button bEdit;
 
         public ViewHolder(FragmentCoursesBinding binding) {
             super(binding.getRoot());
@@ -93,6 +121,8 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
             tMentorName = itemView.findViewById(R.id.textView44);
             tLive = itemView.findViewById(R.id.textView39);
             imageView = itemView.findViewById(R.id.imageView9);
+            bEdit=binding.button9;
+            mainView=binding.mainView;
 
         }
 

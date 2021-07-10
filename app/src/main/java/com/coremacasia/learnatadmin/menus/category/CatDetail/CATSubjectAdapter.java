@@ -28,12 +28,12 @@ public class CATSubjectAdapter extends RecyclerView.Adapter<CATSubjectAdapter.Ho
     private Activity activity;
     private static final String TAG = "SubjectAdapter";
     private CommonDataModel dataModel;
-    private ArrayList<SubjectHelper> list = new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
     private String CAT;
 
     public void setDataModel(CommonDataModel dataModel, String CAT) {
         this.dataModel = dataModel;
-        list = dataModel.getAll_subjects();
+        list = dataModel.getSubject_id();
         this.CAT = CAT;
     }
 
@@ -45,23 +45,19 @@ public class CATSubjectAdapter extends RecyclerView.Adapter<CATSubjectAdapter.Ho
     @NotNull
     @Override
     public Holder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater=LayoutInflater.from(parent.getContext());
-        View view=inflater.inflate(R.layout.list_subjects,parent,false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.list_subjects, parent, false);
         return new Holder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull Holder holder, int position) {
-        SubjectHelper helper=list.get(position);
-
-        String subjectId=helper.getSubject_id();
-
-
-        ArrayList<SubjectHelper> mainSubjectList= MyStore.getCommonData().getAll_subjects();
-        for(SubjectHelper helper1:mainSubjectList){
-            if(subjectId.equals(helper1.getSubject_id())){
+        String subjectId = list.get(position);
+        ArrayList<SubjectHelper> mainSubjectList = MyStore.getCommonData().getAll_subjects();
+        for (SubjectHelper helper1 : mainSubjectList) {
+            if (subjectId.equals(helper1.getSubject_id())) {
                 new ImageSetterGlide().defaultImg(holder.itemView.getContext(),
-                        helper1.getIcon(),holder.imageView);
+                        helper1.getIcon(), holder.imageView);
                 holder.tName.setText(helper1.getTitle());
                 return;
             }
@@ -71,7 +67,10 @@ public class CATSubjectAdapter extends RecyclerView.Adapter<CATSubjectAdapter.Ho
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list != null) {
+            return list.size();
+        } else return 0;
+
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -79,11 +78,12 @@ public class CATSubjectAdapter extends RecyclerView.Adapter<CATSubjectAdapter.Ho
         private TextView tName;
         private CircleImageView imageView;
         private View mainView;
+
         public Holder(@NonNull @NotNull View itemView) {
             super(itemView);
-            tName=itemView.findViewById(R.id.textView38);
-            imageView=itemView.findViewById(R.id.imageView11);
-            mainView=itemView.findViewById(R.id.mainView);
+            tName = itemView.findViewById(R.id.textView38);
+            imageView = itemView.findViewById(R.id.imageView11);
+            mainView = itemView.findViewById(R.id.mainView);
         }
 
     }

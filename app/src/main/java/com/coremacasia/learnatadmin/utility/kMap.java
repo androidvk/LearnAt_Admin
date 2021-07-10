@@ -231,4 +231,5 @@ public class kMap {
     public static String is_visible="is_visible";
     public static String courses="courses";
     public static String updated_by="updated_by";
+    public static String category_id="category_id";
 }

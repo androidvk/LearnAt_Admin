@@ -20,6 +20,12 @@ public class CommonDataModel {
 
     private ArrayList<String> course_id;
 
+    public ArrayList<String> getSubject_id() {
+        return subject_id;
+    }
+
+    private ArrayList<String> subject_id;
+
     public ArrayList<String> getCourse_id() {
         return course_id;
     }

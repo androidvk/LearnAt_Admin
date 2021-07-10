@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.Spinner;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.commons.all_courses.AllCoursesViewModel;
+import com.coremacasia.learnatadmin.utility.MyStore;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,9 +28,11 @@ import com.google.firebase.firestore.DocumentReference;
  */
 public class Courses extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String TAG = "Courses";
 
     public Courses() {
     }
+
     public static Courses newInstance(int columnCount) {
         Courses fragment = new Courses();
         Bundle args = new Bundle();
@@ -43,8 +48,6 @@ public class Courses extends Fragment {
     }
 
     private RecyclerView rvCourses;
-    private Spinner spinner;
-    private CommonDataViewModel viewModel;
     private DocumentReference commonListRef = Reference.superRef(RMAP.courses_all);
 
     @Override
@@ -52,26 +55,15 @@ public class Courses extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_courses_list, container, false);
         rvCourses = view.findViewById(R.id.rvCourses);
-        spinner = view.findViewById(R.id.spinner);
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            CoursesAdapter adapter = new CoursesAdapter(getActivity());
-            rvCourses.setLayoutManager(linearLayoutManager);
-            rvCourses.setAdapter(adapter);
 
-            viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
-            viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
-                    new Observer<CommonDataModel>() {
-                        @Override
-                        public void onChanged(CommonDataModel commonDataModel) {
-                            adapter.setDataModel(commonDataModel);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
 
-        }
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        CoursesAdapter adapter = new CoursesAdapter(getActivity());
+        rvCourses.setLayoutManager(linearLayoutManager);
+        rvCourses.setAdapter(adapter);
+        adapter.setDataModel(MyStore.getCourseData());
+        adapter.notifyDataSetChanged();
         return view;
     }
 }

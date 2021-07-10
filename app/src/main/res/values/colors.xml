@@ -24,4 +24,6 @@
     <color name="m_primary_dark">#0F4B6E</color>
     <color name="dashbaordTitle">#046DBF</color>
     <color name="bluemid">#2B9BFF</color>
+    <color name="bluehigh">#0A2C92</color>
+    <color name="twhite50">#F5FFFFFF</color>
 </resources>

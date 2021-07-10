@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LearnAtAdmin">
-        <activity android:name=".menus.category.CatDetail.CatDetails"></activity>
+        <activity android:name=".menus.category.CatDetail.CatDetails"
+            android:theme="@style/Theme.LearAt.DarkActionBar">
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.LearnAtAdmin.NoActionBar">
@@ -21,7 +24,7 @@
         </activity>
         <activity
             android:name=".start_items.Splash"
-            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity android:name=".start_items.PhoneAuth" />
     </application>
 

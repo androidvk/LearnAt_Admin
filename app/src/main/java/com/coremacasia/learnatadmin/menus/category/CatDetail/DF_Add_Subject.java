@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
@@ -43,7 +44,7 @@ public class DF_Add_Subject extends DialogFragment {
     private String CAT;
     private DialogAddSubjectBinding binding;
     private EditText eTitle, eDescription, eCode,eImageLink;
-    private ImageView imageView;
+    private ImageView bBack;
     private Button bSubmit;
 
     public DF_Add_Subject(String CAT, int i, SubjectHelper helper,
@@ -70,7 +71,7 @@ public class DF_Add_Subject extends DialogFragment {
         eTitle = binding.editTextTextPersonName5;
         eDescription = binding.editTextTextPersonName6;
         eCode = binding.editTextTextPersonName7;
-        imageView = binding.imageView8;
+        bBack = binding.imageView10;
         bSubmit = binding.button6;
         eImageLink=binding.editTextTextPersonName11;
         return binding.getRoot();
@@ -112,6 +113,13 @@ public class DF_Add_Subject extends DialogFragment {
 
                 } else Toast.makeText(getActivity(), "Input Values", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        bBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
 
@@ -171,13 +179,13 @@ public class DF_Add_Subject extends DialogFragment {
         map.put(kMap.added_on, new Date());
         map.put(kMap.category, CAT);
         map.put(kMap.added_by, firebaseUser.getUid());
-        map.put(kMap.icon, "");
+        map.put(kMap.icon, sImagelink);
 
         Map map1 = new HashMap();
-        map1.put(kMap.all_subjects, map);
+        map1.put(kMap.all_subjects, FieldValue.arrayUnion(map));
 
         Map map2=new HashMap();
-        map2.put(kMap.all_subjects,subject_id);
+        map2.put(kMap.subject_id, FieldValue.arrayUnion(subject_id));
 
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
 

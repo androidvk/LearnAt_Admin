@@ -12,18 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddCourseBinding;
+import com.coremacasia.learnatadmin.menus.courses.CourseHelper;
 import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
 import com.coremacasia.learnatadmin.menus.subjects.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
@@ -40,6 +39,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,15 +53,14 @@ import java.util.Map;
 public class DF_Add_Course extends DialogFragment {
     public static final String TAG = "DF_Add_Course";
     private static String CAT;
+    private static CourseHelper helper;
     private DialogAddCourseBinding binding;
     private EditText eTitle, eDescription, eThumbnail;
-    private Spinner spSubject, spMentor;
+    private Spinner spSubject;
     private SwitchMaterial sIndividual, sLive, sVisible;
     private ImageView imageView;
     private Button bSubmit;
     private String sTitle, sDescription, sThumbnail;
-
-
     private CommonDataViewModel viewModel;
     private DocumentReference commonListRef = Reference.superRef(RMAP.list);
     private ArrayAdapter adapter, adapter1;
@@ -70,18 +70,20 @@ public class DF_Add_Course extends DialogFragment {
     private List<SubjectHelper> subjectList = MyStore.getCommonData().getAll_subjects();
     private List<String> subjectNames = new ArrayList<>();
     private CategoryViewModel categoryViewModel;
-
+    private TextView tDetails, tMentor,tSubject;
     private SubjectHelper selectedSubjectHelper;
     private MentorHelper selectedMentorHelper;
+    private View vBack;
 
-
-    public  DF_Add_Course newInstance(String CAT) {
-        DF_Add_Course.CAT = CAT;
+    public static DF_Add_Course newInstance(String CAT1, CourseHelper helper1) {
+        CAT = CAT1;
+        helper = helper1;
         Bundle args = new Bundle();
         DF_Add_Course fragment = new DF_Add_Course();
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -91,15 +93,17 @@ public class DF_Add_Course extends DialogFragment {
         binding = DialogAddCourseBinding.inflate(LayoutInflater.from(inflater.getContext()));
         eTitle = binding.editTextTextPersonName2;
         eDescription = binding.editTextTextPersonName3;
-        spSubject = binding.spinner2;
-        spMentor = binding.spinner3;
+        tSubject=binding.textView20;
+        tMentor = binding.textView25;
         sLive = binding.switch1;
         sVisible = binding.switch2;
         sIndividual = binding.switch3;
-        imageView = binding.imageView7;
         bSubmit = binding.button4;
         eThumbnail = binding.editTextTextPersonName10;
+        tDetails = binding.textView33;
+        vBack=binding.imageView7;
         return binding.getRoot();
+
     }
 
     @Override
@@ -107,12 +111,55 @@ public class DF_Add_Course extends DialogFragment {
         return R.style.Theme_LearnAt_FullScreenDialog;
     }
 
+    String subject = "";
+    String mentor = "";
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mentorSpinnerConfig();
+        mentorSelector();
         subjectSpinnerConfig();
+        categoryRef=Reference.superRef(CAT);
+        //For Updating Course
+        if (helper != null) {
+            // TODO: 27-06-2021 Update course price
+            // TODO: 27-06-2021 Update if mentor or not
+            // TODO: 27-06-2021 write to mentor links
+            // TODO: 27-06-2021 Subject and mentor chooser correct
+
+            bSubmit.setText("Update");
+            eTitle.setText(helper.getTitle());
+            eThumbnail.setText(helper.getThumbnail());
+            eDescription.setText(helper.getDesc());
+            sLive.setChecked(helper.isIs_live());
+            sIndividual.setChecked(helper.isIs_individual());
+            sVisible.setChecked(helper.isIs_visible());
+
+            for (SubjectHelper subjectHelper : MyStore.getCommonData().getAll_subjects()) {
+                if (helper.getSubject_id().equals(subjectHelper.getSubject_id())) {
+                    subject = subjectHelper.getTitle() + " | " + subjectHelper.getSubject_code();
+                    selectedSubjectHelper=subjectHelper;
+                    tSubject.setText("Subject: "+subjectHelper.getTitle());
+
+                    for (MentorHelper mentorHelper : MyStore.getCommonData().getMentors()) {
+                        if (helper.getMentor_id().equals(mentorHelper.getMentor_id())) {
+
+                            mentor = mentorHelper.getName();
+                            selectedMentorHelper=mentorHelper;
+                            tMentor.setText("Mentor: "+mentorHelper.getName());
+
+                            tDetails.setText("Added By: " + helper.getAdded_by() +
+                                    "\nCategoryID: " + helper.getCategory_id());
+                            break;
+                        }
+
+                    }
+                    break;
+
+                }
+            }
+
+        }
 
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,12 +169,78 @@ public class DF_Add_Course extends DialogFragment {
                 sThumbnail = eThumbnail.getText().toString().trim();
 
                 if (!sThumbnail.equals("") && !sDescription.equals("") && !sTitle.equals("")) {
-                    writeData();
+                    if (helper == null) {
+                        writeData();
+                    } else {
+                        updateCourse();
+                    }
+
                 }
 
             }
         });
 
+        vBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+    }
+
+    private void updateCourse() {
+        Map map = new HashMap();
+        map.put(kMap.added_by, helper.getAdded_by());
+        map.put(kMap.added_on, new Date());
+        map.put(kMap.thumbnail, sThumbnail);
+        map.put(kMap.title, sTitle);
+        map.put(kMap.desc, sDescription);
+        map.put(kMap.category_id, CAT);
+        map.put(kMap.course_id, helper.getCourse_id());
+        map.put(kMap.mentor_id, selectedMentorHelper.getMentor_id());
+        map.put(kMap.subject_id, selectedSubjectHelper.getSubject_id());
+        map.put(kMap.is_live, sLive.isChecked());
+        map.put(kMap.is_individual, sIndividual.isChecked());
+        map.put(kMap.is_visible, sVisible.isChecked());
+
+
+        ArrayList<CourseHelper> list = MyStore.getCourseData().getAll_courses();
+        int position = 0;
+        for (CourseHelper courseHelper : list) {
+            if (courseHelper.getCourse_id().equals(helper.getCourse_id())) {
+                break;
+            }
+            position++;
+        }
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.toJsonTree(map);
+        CourseHelper helper = gson.fromJson(jsonElement, CourseHelper.class);
+        list.set(position, helper);
+
+
+        Map map1 = new HashMap();
+        map1.put(RMAP.all_courses, list);
+
+        Map map2 = new HashMap();
+        map2.put(RMAP.course_id, FieldValue.arrayUnion(helper.getCourse_id()));
+
+        DocumentReference all_course = Reference.superRef(RMAP.all_courses);
+
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        //batch.set(categoryRef, map2, SetOptions.merge());
+        batch.set(all_course, map1, SetOptions.merge());
+
+        batch.set(Reference.superCourseRef(CAT, helper.getCourse_id()), map,
+                SetOptions.merge());
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    dismiss();
+                }
+            }
+        });
     }
 
 
@@ -141,6 +254,8 @@ public class DF_Add_Course extends DialogFragment {
         map.put(kMap.added_on, new Date());
         map.put(kMap.thumbnail, sThumbnail);
         map.put(kMap.title, sTitle);
+        map.put(kMap.desc, sDescription);
+        map.put(kMap.category_id, CAT);
         map.put(kMap.course_id, course_id);
         map.put(kMap.mentor_id, selectedMentorHelper.getMentor_id());
         map.put(kMap.subject_id, selectedSubjectHelper.getSubject_id());
@@ -148,22 +263,22 @@ public class DF_Add_Course extends DialogFragment {
         map.put(kMap.is_individual, sIndividual.isChecked());
         map.put(kMap.is_visible, sVisible.isChecked());
 
-        Map map1=new HashMap();
+        Map map1 = new HashMap();
         map1.put(RMAP.all_courses, FieldValue.arrayUnion(map));
 
-        Map map2=new HashMap();
-        map2.put(RMAP.course_id,FieldValue.arrayUnion(course_id));
+        Map map2 = new HashMap();
+        map2.put(RMAP.course_id, FieldValue.arrayUnion(course_id));
 
-        DocumentReference all_course=Reference.superRef(RMAP.all_courses);
+        DocumentReference all_course = Reference.superRef(RMAP.all_courses);
 
-        WriteBatch batch=FirebaseFirestore.getInstance().batch();
-        batch.set(categoryRef,map2, SetOptions.merge());
-        batch.set(all_course,map1, SetOptions.merge());
-        batch.set(Reference.superCourseRef(CAT,course_id),map,SetOptions.merge());
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        batch.set(categoryRef, map2, SetOptions.merge());
+        batch.set(all_course, map1, SetOptions.merge());
+        batch.set(Reference.superCourseRef(CAT, course_id), map, SetOptions.merge());
         batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     dismiss();
                 }
             }
@@ -171,80 +286,54 @@ public class DF_Add_Course extends DialogFragment {
 
     }
 
-
-    private void mentorSpinnerConfig() {
-        adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, mentorNames);
-        adapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        spMentor.setAdapter(adapter);
-        viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
-        viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
-                new Observer<CommonDataModel>() {
-                    @Override
-                    public void onChanged(CommonDataModel commonDataModel) {
-                        mentorList = commonDataModel.getMentors();
-                        if(mentorList==null){
-                            return;
-                        }
-                        Log.e(TAG, "onChanged: mentor " + mentorList.size());
-                        for (MentorHelper helper : mentorList) {
-                            mentorNames.add(helper.getName());
-                        }
-                        adapter.notifyDataSetChanged();
-
-                    }
-                });
-
-        spMentor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void mentorSelector() {
+        tMentor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedMentorHelper = mentorList.get(position);
-            }
+            public void onClick(View v) {
+                DF_Mentor_Search_list df = DF_Mentor_Search_list.newInstance();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                df.show(getActivity().getSupportFragmentManager(),
+                        DF_Mentor_Search_list.TAG);
 
+               df.onMentorSelected(new DF_Mentor_Search_list.GetSelectedMentorListener() {
+                   @Override
+                   public void onMentorSelected(MentorHelper helper) {
+                       selectedMentorHelper=helper;
+                       tMentor.setText(helper.getName());
+                   }
+               });
             }
         });
+
+
     }
 
     private void subjectSpinnerConfig() {
-        categoryRef = Reference.superRef(CAT);
-        adapter1 = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, subjectNames);
-        adapter1.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-        spSubject.setAdapter(adapter1);
-       int i=0;
-        for (SubjectHelper helper : subjectList) {
-            i++;
-            subjectNames.add(helper.getTitle());
-            if(i==subjectList.size()){
-                adapter1.notifyDataSetChanged();
-            }
-        }
-
-        spSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tSubject.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSubjectHelper = subjectList.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                DialogSubjectSelector dialog=DialogSubjectSelector.newInstance(CAT);
+                dialog.show(getActivity().getSupportFragmentManager(),
+                        DialogSubjectSelector.TAG);
+                dialog.onSubjectClick(new DialogSubjectSelector.OnSubjectClickListener() {
+                    @Override
+                    public void onSubjectClick(SubjectHelper helper) {
+                        selectedSubjectHelper=helper;
+                        tSubject.setText(helper.getTitle());
+                    }
+                });
             }
         });
+
     }
 
     @Override
     public void onDismiss(@NonNull @NotNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        mentorList=null;
-        subjectList=null;
-        categoryViewModel=null;
-        viewModel=null;
+        mentorList = null;
+        subjectList = null;
+        categoryViewModel = null;
+        viewModel = null;
     }
 
     @Override

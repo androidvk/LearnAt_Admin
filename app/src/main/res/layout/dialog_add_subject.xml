@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:textStyle="bold"
         android:textColor="@color/text_desc"
         android:textSize="@dimen/medium_1"
         android:id="@+id/textView18"
@@ -87,4 +88,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName7" />
+
+    <ImageView
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="8dp"
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/outline_arrow_back_black_20" />
 </androidx.constraintlayout.widget.ConstraintLayout>

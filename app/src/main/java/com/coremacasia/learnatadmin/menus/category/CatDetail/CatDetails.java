@@ -21,11 +21,14 @@ public class CatDetails extends AppCompatActivity {
     private RecyclerView rvSubjects,rvCourses;
     private Button bAddCourse,bAddSubject;
     private String CAT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CAT=getIntent().getStringExtra("cat");
+        getSupportActionBar().setTitle(CAT);
         rvSubjects=findViewById(R.id.rvCourses);
         rvCourses=findViewById(R.id.recyclerViewcat);
         bAddCourse=findViewById(R.id.button3);
@@ -33,7 +36,7 @@ public class CatDetails extends AppCompatActivity {
         bAddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Course df_add_course=new DF_Add_Course().newInstance(CAT);
+                DF_Add_Course df_add_course=DF_Add_Course.newInstance(CAT, null);
                 df_add_course.show(getSupportFragmentManager(),DF_Add_Course.TAG);
             }
         });
@@ -54,7 +57,7 @@ public class CatDetails extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        CATCourseAdapter adapter=new CATCourseAdapter(getApplicationContext());
+        CATCourseAdapter adapter=new CATCourseAdapter(CatDetails.this);
         rvCourses.setLayoutManager(linearLayoutManager);
         rvCourses.setAdapter(adapter);
         rvCourses.setNestedScrollingEnabled(false);
@@ -94,4 +97,9 @@ public class CatDetails extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 }

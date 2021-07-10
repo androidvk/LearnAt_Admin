@@ -1,14 +1,16 @@
 package com.coremacasia.learnatadmin.menus.subjects;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,16 +28,20 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHolder> {
+public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHolder>
+        implements Filterable {
     private static final String TAG = "SubjectsAdapter";
     private ArrayList<SubjectHelper> list = new ArrayList<>();
 
     private CommonDataModel commonDataModel;
     private Context activity;
+    private int from;
+    private String CAT;
 
-    public SubjectsAdapter(Context activity) {
+    public SubjectsAdapter(Context activity, int from) {
 
         this.activity = activity;
+        this.from = from;
     }
 
     @Override
@@ -45,31 +51,97 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
 
     }
 
+    public OnSubjectClickListener listener;
+
+    public void setCategory(String CAT) {
+        this.CAT = CAT;
+    }
+
+    public interface OnSubjectClickListener {
+        void onSubjectClick(SubjectHelper helper);
+    }
+
+    public void onSubjectClick(OnSubjectClickListener listener) {
+        this.listener = listener;
+
+    }
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        SubjectHelper helper = list.get(position);
-        holder.tCode.setText( helper.getCategory() + " | " + helper.getSubject_code());
+        SubjectHelper helper = filteredSubjectList.get(position);
+        holder.tCode.setText(helper.getCategory() + " | " + helper.getSubject_code());
         holder.tDesc.setText(helper.getDesc());
         holder.tTitle.setText(helper.getTitle());
-        new ImageSetterGlide().defaultImg(holder.context,helper.getIcon(),holder.imageView);
+        new ImageSetterGlide().defaultImg(holder.context, helper.getIcon(), holder.imageView);
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager manager = ((AppCompatActivity) activity).getSupportFragmentManager();
-                DF_Add_Subject df_add_subject = new DF_Add_Subject(helper.getCategory(), 10, helper, position, list);
-                df_add_subject.show(manager, DF_Add_Subject.TAG);
+                if (from == 1) {
+                    listener.onSubjectClick(helper);
+                } else {
+                    FragmentManager manager = ((AppCompatActivity) activity).getSupportFragmentManager();
+                    DF_Add_Subject df_add_subject = new DF_Add_Subject(helper.getCategory(), 10, helper, position, list);
+                    df_add_subject.show(manager, DF_Add_Subject.TAG);
+                }
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return filteredSubjectList.size();
     }
 
     public void setDataModel(CommonDataModel commonDataModel) {
-        list = commonDataModel.getAll_subjects();
         this.commonDataModel = commonDataModel;
+        if (CAT != null) {
+            for (SubjectHelper sh : commonDataModel.getAll_subjects()) {
+                if (sh.getCategory().equals(CAT)) {
+                    list.add(sh);
+                }
+            }
+        } else list = commonDataModel.getAll_subjects();
+
+
+    }
+
+    private List<SubjectHelper> filteredSubjectList = new ArrayList<>();
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+
+                    filteredSubjectList = list;
+                } else {
+                    List<SubjectHelper> filteredList = new ArrayList<>();
+                    for (SubjectHelper row : list) {
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    filteredSubjectList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredSubjectList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredSubjectList = (ArrayList<SubjectHelper>) filterResults.values;
+                if (filteredSubjectList.size() == 0) {
+                    filteredSubjectList = list;
+                }
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -89,8 +161,6 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
             context = binding.getRoot().getContext();
             mainView = binding.mainView;
 
-
         }
-
     }
 }

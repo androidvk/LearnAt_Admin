@@ -73,9 +73,10 @@ public class Subjects extends Fragment {
 
 
             GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
-            SubjectsAdapter adapter = new SubjectsAdapter(getActivity());
+            SubjectsAdapter adapter = new SubjectsAdapter(getActivity(),2);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(adapter);
+            adapter.getFilter().filter("");
             //recyclerView.setNestedScrollingEnabled(false);
 
             commonListRef = Reference.superRef(RMAP.list);
