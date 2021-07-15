@@ -7,5 +7,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    tools:context=".menus.subjects.Subjects"
+    tools:context=".Activities.SubjectsList"
     tools:listitem="@layout/fragment_subjects" />

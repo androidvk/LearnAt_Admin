@@ -1,20 +1,17 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.menus.adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
-import com.coremacasia.learnatadmin.menus.subjects.SubjectHelper;
+import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
 

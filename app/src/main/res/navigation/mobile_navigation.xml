@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/nav_category"
-        android:name="com.coremacasia.learnatadmin.menus.category.CategoryList"
+        android:name="com.coremacasia.learnatadmin.Activities.CategoryList"
         android:label="@string/Category"
         tools:layout="@layout/fragment_category_list" />
 
     <fragment
         android:id="@+id/nav_courses"
-        android:name="com.coremacasia.learnatadmin.menus.courses.Courses"
+        android:name="com.coremacasia.learnatadmin.Activities.AllCoursesList"
         android:label="@string/Courses"
         tools:layout="@layout/fragment_courses_list" />
 
     <fragment
         android:id="@+id/nav_mentors"
-        android:name="com.coremacasia.learnatadmin.menus.mentors.Mentor"
+        android:name="com.coremacasia.learnatadmin.Activities.MentorList"
         android:label="@string/Mentors"
         tools:layout="@layout/fragment_mentor_list" />
     <fragment
         android:id="@+id/nav_subjects"
-        android:name="com.coremacasia.learnatadmin.menus.subjects.Subjects"
+        android:name="com.coremacasia.learnatadmin.Activities.SubjectsList"
         android:label="@string/Subjects"
         tools:layout="@layout/fragment_subjects_list" />
 </navigation>

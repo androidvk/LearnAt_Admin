@@ -1,12 +1,10 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.menus.dialogs;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +20,9 @@ import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddCourseBinding;
-import com.coremacasia.learnatadmin.menus.courses.CourseHelper;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
-import com.coremacasia.learnatadmin.menus.subjects.SubjectHelper;
+import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;

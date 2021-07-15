@@ -2,9 +2,11 @@ package com.coremacasia.learnatadmin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
@@ -24,11 +26,18 @@ import com.coremacasia.learnatadmin.start_items.Splash;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.coremacasia.learnatadmin.utility.MyStore;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import ro.alexmamo.firestore_document.FirestoreDocument;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private CommonDataViewModel viewModel;
     private AllCoursesViewModel allCoursesViewModel;
 
-
+    private static final String TAG = "MainActivity";
     private void getData() {
         commonListRef = Reference.superRef(RMAP.list);
         viewModel = new ViewModelProvider(this).get(CommonDataViewModel.class);

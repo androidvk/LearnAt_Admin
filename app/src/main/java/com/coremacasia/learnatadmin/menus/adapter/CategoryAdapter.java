@@ -1,6 +1,5 @@
-package com.coremacasia.learnatadmin.menus.category;
+package com.coremacasia.learnatadmin.menus.adapter;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -13,7 +12,8 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCategoryBinding;
-import com.coremacasia.learnatadmin.menus.category.CatDetail.CatDetails;
+import com.coremacasia.learnatadmin.Activities.CatDetails;
+import com.coremacasia.learnatadmin.menus.helpers.CategoryHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 
@@ -61,7 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.context.startActivity(new Intent(context,CatDetails.class)
+                holder.context.startActivity(new Intent(context, CatDetails.class)
                 .putExtra("cat",helper.getId()));
             }
         });

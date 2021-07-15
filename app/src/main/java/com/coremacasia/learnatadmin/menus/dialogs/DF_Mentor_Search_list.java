@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.menus.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.commons.offlineData.XtraHelper;
 import com.coremacasia.learnatadmin.databinding.DialogMentorSearchListBinding;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
-import com.coremacasia.learnatadmin.menus.mentors.MentorsAdapter;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.menus.adapter.MentorsAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
-
-import org.jetbrains.annotations.NotNull;
 
 public class DF_Mentor_Search_list extends DialogFragment {
     public static final String TAG = "DF_Mentor_Search_list";

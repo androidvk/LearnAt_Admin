@@ -1,11 +1,12 @@
-package com.coremacasia.learnatadmin.menus.category;
+package com.coremacasia.learnatadmin.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.menus.adapter.SubjectsAdapter;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,7 +24,7 @@ import com.google.firebase.firestore.DocumentReference;
 /**
  * A fragment representing a list of Items.
  */
-public class CategoryList extends Fragment {
+public class SubjectsList extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -33,13 +35,13 @@ public class CategoryList extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public CategoryList() {
+    public SubjectsList() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static CategoryList newInstance(int columnCount) {
-        CategoryList fragment = new CategoryList();
+    public static SubjectsList newInstance(int columnCount) {
+        SubjectsList fragment = new SubjectsList();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -54,23 +56,30 @@ public class CategoryList extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
-    private RecyclerView recyclerView;
+
+    private static final String TAG = "Subjects";
     private CommonDataViewModel viewModel;
-    DocumentReference commonListRef = Reference.superRef(RMAP.list);
+    private DocumentReference commonListRef;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_subjects_list, container, false);
 
-        recyclerView=view.findViewById(R.id.list);
         // Set the adapter
         if (view instanceof RecyclerView) {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            CategoryAdapter adapter = new CategoryAdapter(getActivity());
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+
+
+            GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+            SubjectsAdapter adapter = new SubjectsAdapter(getActivity(),2);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(adapter);
+            adapter.getFilter().filter("");
+            //recyclerView.setNestedScrollingEnabled(false);
 
+            commonListRef = Reference.superRef(RMAP.list);
             viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
             viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
                     new Observer<CommonDataModel>() {
@@ -81,6 +90,8 @@ public class CategoryList extends Fragment {
                         }
                     });
         }
+
+
         return view;
     }
 }

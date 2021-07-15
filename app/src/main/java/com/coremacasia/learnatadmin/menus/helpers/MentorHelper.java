@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.mentors;
+package com.coremacasia.learnatadmin.menus.helpers;
 
 public class MentorHelper {
     private String category,image,mentor_id,name;

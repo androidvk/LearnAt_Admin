@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.category;
+package com.coremacasia.learnatadmin.menus.helpers;
 
 public class CategoryHelper {
     public String getId() {

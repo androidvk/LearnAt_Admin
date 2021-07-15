@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -13,6 +13,10 @@ import android.widget.Button;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
+import com.coremacasia.learnatadmin.menus.adapter.CATCourseAdapter;
+import com.coremacasia.learnatadmin.menus.adapter.CATSubjectAdapter;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Subject;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
 

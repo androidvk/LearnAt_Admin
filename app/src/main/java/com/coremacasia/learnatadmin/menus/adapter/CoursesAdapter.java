@@ -1,7 +1,6 @@
-package com.coremacasia.learnatadmin.menus.courses;
+package com.coremacasia.learnatadmin.menus.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
-import com.coremacasia.learnatadmin.menus.category.CatDetail.DF_Add_Course;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
+import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
 

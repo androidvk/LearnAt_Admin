@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.menus.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.databinding.DialogMentorSearchListBinding;
 import com.coremacasia.learnatadmin.databinding.DialogSubjectSelectorBinding;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
-import com.coremacasia.learnatadmin.menus.mentors.MentorsAdapter;
-import com.coremacasia.learnatadmin.menus.subjects.SubjectHelper;
-import com.coremacasia.learnatadmin.menus.subjects.SubjectsAdapter;
+import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
+import com.coremacasia.learnatadmin.menus.adapter.SubjectsAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;

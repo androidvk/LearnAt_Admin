@@ -1,6 +1,6 @@
 package com.coremacasia.learnatadmin.commons.all_courses;
 
-import com.coremacasia.learnatadmin.menus.courses.CourseHelper;
+import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
 
 import java.util.ArrayList;
 

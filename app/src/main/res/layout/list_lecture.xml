@@ -2,19 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.coremacasia.learnatadmin.menus.courses.Courses"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.AllCoursesList">
+    android:layout_height="match_parent">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCourses"
-        android:layout_width="0dp"
+    <TextView
+        android:textColor="@color/bluehigh"
+        android:textSize="@dimen/medium_1"
+        android:padding="18sp"
+        android:id="@+id/textView35"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

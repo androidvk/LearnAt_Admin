@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.mentors;
+package com.coremacasia.learnatadmin.Activities;
 
 import android.os.Bundle;
 
@@ -18,6 +18,8 @@ import android.widget.Button;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
+import com.coremacasia.learnatadmin.menus.adapter.MentorsAdapter;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Mentor;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A fragment representing a list of Items.
  */
-public class Mentor extends Fragment {
+public class MentorList extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -38,13 +40,13 @@ public class Mentor extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public Mentor() {
+    public MentorList() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static Mentor newInstance(int columnCount) {
-        Mentor fragment = new Mentor();
+    public static MentorList newInstance(int columnCount) {
+        MentorList fragment = new MentorList();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -80,7 +82,7 @@ public class Mentor extends Fragment {
         bAddMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance();
+                DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance(1, null);
                 df_add_mentor.show(getActivity().getSupportFragmentManager(), DF_Add_Mentor.TAG);
             }
         });

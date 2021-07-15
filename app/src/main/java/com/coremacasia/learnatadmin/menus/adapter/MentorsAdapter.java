@@ -1,5 +1,7 @@
-package com.coremacasia.learnatadmin.menus.mentors;
+package com.coremacasia.learnatadmin.menus.adapter;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -12,20 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
-import com.coremacasia.learnatadmin.commons.offlineData.XtraHelper;
 import com.coremacasia.learnatadmin.databinding.FragmentMentorBinding;
-import com.coremacasia.learnatadmin.menus.category.CatDetail.DF_Mentor_Search_list;
-import com.coremacasia.learnatadmin.menus.mentors.placeholder.PlaceholderContent.PlaceholderItem;
-import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Mentor;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHolder>
         implements Filterable {
     private ArrayList<MentorHelper> list = new ArrayList<>();
@@ -71,6 +68,13 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
             public void onClick(View v) {
                 if(from==1){
                     onMentorClickListener.onMentorClick(helper);
+                }else {
+                    FragmentManager manager = ((AppCompatActivity) activity)
+                            .getSupportFragmentManager();
+                    DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance(2,helper);
+                    df_add_mentor.show(manager,
+                            DF_Add_Mentor.TAG);
+
                 }
 
             }

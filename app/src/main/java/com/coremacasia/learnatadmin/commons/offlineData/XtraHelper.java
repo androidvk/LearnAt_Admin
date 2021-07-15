@@ -1,6 +1,6 @@
 package com.coremacasia.learnatadmin.commons.offlineData;
 
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
 
 public class XtraHelper {
 

@@ -1,11 +1,10 @@
-package com.coremacasia.learnatadmin.menus.subjects;
+package com.coremacasia.learnatadmin.menus.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +15,14 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentSubjectsBinding;
-import com.coremacasia.learnatadmin.menus.category.CatDetail.DF_Add_Subject;
-import com.coremacasia.learnatadmin.menus.subjects.placeholder.PlaceholderContent.PlaceholderItem;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Subject;
+import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHolder>
         implements Filterable {
     private static final String TAG = "SubjectsAdapter";

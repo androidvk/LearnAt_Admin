@@ -1,7 +1,8 @@
-package com.coremacasia.learnatadmin.menus.category.CatDetail;
+package com.coremacasia.learnatadmin.menus.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
-import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
-import com.coremacasia.learnatadmin.menus.courses.CourseHelper;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
+import com.coremacasia.learnatadmin.Activities.LectureList;
+import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +41,7 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
         this.commonDataModel = commonDataModel;
         list = commonDataModel.getCourse_id();
     }
+
 
     public CATCourseAdapter(Activity context) {
         this.context = context;
@@ -71,22 +75,26 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                     }
                 }
 
+                holder.mainView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Gson gson = new Gson();
+                        String gSonHelper = gson.toJson(helper);
+                        holder.context.startActivity(new Intent(
+                                holder.context, LectureList.class)
+                        .putExtra("helper", gSonHelper));
+                    }
+                });
+
                 holder.bEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         FragmentManager manager = ((AppCompatActivity) context)
                                 .getSupportFragmentManager();
-                        DF_Add_Course df_add_course= DF_Add_Course.newInstance(helper.getCategory_id()
-                                ,helper);
-                        df_add_course.show(manager,DF_Add_Course.TAG);
-                    }
-                });
-
-                holder.mainView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-
+                        DF_Add_Course df_add_course = DF_Add_Course.newInstance(helper.getCategory_id()
+                                , helper);
+                        df_add_course.show(manager, DF_Add_Course.TAG);
                     }
                 });
 
@@ -121,8 +129,8 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
             tMentorName = itemView.findViewById(R.id.textView44);
             tLive = itemView.findViewById(R.id.textView39);
             imageView = itemView.findViewById(R.id.imageView9);
-            bEdit=binding.button9;
-            mainView=binding.mainView;
+            bEdit = binding.button9;
+            mainView = binding.mainView;
 
         }
 

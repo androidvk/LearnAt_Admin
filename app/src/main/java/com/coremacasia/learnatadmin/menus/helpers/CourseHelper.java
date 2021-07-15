@@ -1,4 +1,7 @@
-package com.coremacasia.learnatadmin.menus.courses;
+package com.coremacasia.learnatadmin.menus.helpers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseHelper {
     private String added_by;
@@ -7,6 +10,11 @@ public class CourseHelper {
     private String subject_id;
     private String thumbnail;
     private String desc;
+    private List<LectureHelper> lectures=new ArrayList<>();
+
+    public List<LectureHelper> getLectures() {
+        return lectures;
+    }
 
     public String getDesc() {
         return desc;

@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.subjects;
+package com.coremacasia.learnatadmin.menus.helpers;
 
 import java.util.Date;
 

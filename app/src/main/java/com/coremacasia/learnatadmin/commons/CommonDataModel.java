@@ -1,11 +1,9 @@
 package com.coremacasia.learnatadmin.commons;
 
-import com.coremacasia.learnatadmin.menus.category.CategoryHelper;
-import com.coremacasia.learnatadmin.menus.courses.CourseHelper;
-import com.coremacasia.learnatadmin.menus.courses.Courses;
-import com.coremacasia.learnatadmin.menus.mentors.DF_Add_Mentor;
-import com.coremacasia.learnatadmin.menus.mentors.MentorHelper;
-import com.coremacasia.learnatadmin.menus.subjects.SubjectHelper;
+import com.coremacasia.learnatadmin.menus.helpers.CategoryHelper;
+import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
 
 import java.util.ArrayList;
 
