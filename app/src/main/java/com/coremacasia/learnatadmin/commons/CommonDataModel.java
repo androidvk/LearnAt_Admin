@@ -1,9 +1,9 @@
 package com.coremacasia.learnatadmin.commons;
 
-import com.coremacasia.learnatadmin.menus.helpers.CategoryHelper;
-import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
-import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
+import com.coremacasia.learnatadmin.helpers.CategoryHelper;
+import com.coremacasia.learnatadmin.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 
 import java.util.ArrayList;
 
@@ -35,6 +35,16 @@ public class CommonDataModel {
     private ArrayList<CourseHelper> all_courses;
 
     private ArrayList<MentorHelper> mentors;
+
+    private ArrayList<String> course_lang=new ArrayList<>();
+
+    public void setCourse_lang(ArrayList<String> course_lang) {
+        this.course_lang = course_lang;
+    }
+
+    public ArrayList<String> getCourse_lang() {
+        return course_lang;
+    }
 
     private ArrayList<SubjectHelper> all_subjects;
 

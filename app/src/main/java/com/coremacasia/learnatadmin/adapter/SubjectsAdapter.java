@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.adapter;
+package com.coremacasia.learnatadmin.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentSubjectsBinding;
-import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Subject;
-import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Subject;
+import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 

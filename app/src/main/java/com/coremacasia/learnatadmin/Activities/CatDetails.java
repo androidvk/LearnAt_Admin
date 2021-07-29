@@ -9,14 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
-import com.coremacasia.learnatadmin.menus.adapter.CATCourseAdapter;
-import com.coremacasia.learnatadmin.menus.adapter.CATSubjectAdapter;
-import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
-import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Subject;
+import com.coremacasia.learnatadmin.adapter.CATCourseAdapter;
+import com.coremacasia.learnatadmin.adapter.CATSubjectAdapter;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Subject;
+import com.coremacasia.learnatadmin.dialogs.DF_Selector_Course;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -25,7 +27,7 @@ public class CatDetails extends AppCompatActivity {
     private RecyclerView rvSubjects,rvCourses;
     private Button bAddCourse,bAddSubject;
     private String CAT;
-
+    private TextView tSeeAllCourses;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class CatDetails extends AppCompatActivity {
         rvCourses=findViewById(R.id.recyclerViewcat);
         bAddCourse=findViewById(R.id.button3);
         bAddSubject=findViewById(R.id.button5);
+        tSeeAllCourses=findViewById(R.id.textView48);
         bAddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +55,14 @@ public class CatDetails extends AppCompatActivity {
             }
         });
 
+        tSeeAllCourses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DF_Selector_Course dialog=new DF_Selector_Course();
+                dialog.show(getSupportFragmentManager(),DF_Selector_Course.TAG);
+            }
+        });
+
         setSubjectView();
         setCourseView();
     }
@@ -59,7 +70,7 @@ public class CatDetails extends AppCompatActivity {
     private void setCourseView() {
         categoryRef = Reference.superRef(CAT);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         CATCourseAdapter adapter=new CATCourseAdapter(CatDetails.this);
         rvCourses.setLayoutManager(linearLayoutManager);

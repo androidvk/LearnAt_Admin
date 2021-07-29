@@ -13,8 +13,9 @@ import android.view.MenuItem;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.ActivityLectureListBinding;
-import com.coremacasia.learnatadmin.menus.adapter.LectureAdapter;
-import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.adapter.LectureAdapter;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Lecture;
+import com.coremacasia.learnatadmin.helpers.CourseHelper;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,7 +43,7 @@ public class LectureList extends AppCompatActivity {
         getSupportActionBar().setTitle(courseHelper.getTitle());
 
         getCourseData();
-        setRecyclerView();
+        //setRecyclerView();
 
 
     }
@@ -66,6 +67,7 @@ public class LectureList extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 if(value.exists()){
                    courseHelper = value.toObject(CourseHelper.class);
+                   setRecyclerView();
                 }
 
             }
@@ -88,7 +90,9 @@ public class LectureList extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_add) {
-
+            DF_Add_Lecture dialog= DF_Add_Lecture.newInstance();
+            dialog.setCourseHelper(courseHelper);
+            dialog.show(getSupportFragmentManager(), DF_Add_Lecture.TAG);
         }
         return super.onOptionsItemSelected(item);
     }

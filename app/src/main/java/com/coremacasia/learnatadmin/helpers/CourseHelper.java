@@ -1,6 +1,7 @@
-package com.coremacasia.learnatadmin.menus.helpers;
+package com.coremacasia.learnatadmin.helpers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CourseHelper {
@@ -10,6 +11,21 @@ public class CourseHelper {
     private String subject_id;
     private String thumbnail;
     private String desc;
+    private String course_price,course_lang;
+    private Date start_date;
+
+    public String getCourse_price() {
+        return course_price;
+    }
+
+    public String getCourse_lang() {
+        return course_lang;
+    }
+
+    public Date getStart_date() {
+        return start_date;
+    }
+
     private List<LectureHelper> lectures=new ArrayList<>();
 
     public List<LectureHelper> getLectures() {

@@ -70,4 +70,5 @@
     <string name="Category">Category</string>
     <string name="Courses">Courses</string>
     <string name="Add">Add</string>
+    <string name="sending_otp">Sending OTP</string>
 </resources>

@@ -232,4 +232,11 @@ public class kMap {
     public static String courses="courses";
     public static String updated_by="updated_by";
     public static String category_id="category_id";
+    public static String lecture_id="lecture_id";
+    public static String lectures="lectures";
+    public static String course_price="course_price";
+
+    public static String course_lang="course_lang";
+    public static String start_date="start_date";
+
 }

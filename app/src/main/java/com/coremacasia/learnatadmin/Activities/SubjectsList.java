@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
-import com.coremacasia.learnatadmin.menus.adapter.SubjectsAdapter;
+import com.coremacasia.learnatadmin.adapter.SubjectsAdapter;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;

@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.dialogs;
+package com.coremacasia.learnatadmin.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.DialogAddSubjectBinding;
-import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
+import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.coremacasia.learnatadmin.utility.kMap;

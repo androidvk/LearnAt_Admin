@@ -71,6 +71,7 @@ public class PhoneAuth extends AppCompatActivity {
         tTimer.setVisibility(View.GONE);
         tOtpStatus.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.GONE);
+        eOtp.setEnabled(false);
         processAuth();
 
         startPhoneNumberVerification(NUMBER);
@@ -153,7 +154,7 @@ public class PhoneAuth extends AppCompatActivity {
                 tOtpInfo.setText(R.string.resendIn);
                 tOtpInfo.setVisibility(View.VISIBLE);
                 countdownTimer();
-
+                eOtp.setEnabled(true);
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 mResendToken = token;
@@ -170,7 +171,10 @@ public class PhoneAuth extends AppCompatActivity {
             public void onClick(View v) {
                 tOtpStatus.setVisibility(View.INVISIBLE);
                 if(eOtp.getOTP().length()==6){
-                    verifyPhoneNumberWithCode(mVerificationId, eOtp.getOTP());
+                    if (mVerificationId!=null){
+                        verifyPhoneNumberWithCode(mVerificationId, eOtp.getOTP());
+                    }else Toast.makeText(PhoneAuth.this, R.string.sending_otp, Toast.LENGTH_SHORT).show();
+
                     closeKeyboard();
                 }  else {
                     Toast.makeText(PhoneAuth.this, R.string.enterOtp, Toast.LENGTH_SHORT).show();
@@ -189,7 +193,10 @@ public class PhoneAuth extends AppCompatActivity {
             @Override
             public void onOTPComplete(String otp) {
                 tOtpStatus.setVisibility(View.INVISIBLE);
-                verifyPhoneNumberWithCode(mVerificationId, eOtp.getOTP());
+                if(mVerificationId!=null){
+                    verifyPhoneNumberWithCode(mVerificationId, eOtp.getOTP());
+                }else Toast.makeText(PhoneAuth.this, R.string.sending_otp, Toast.LENGTH_SHORT).show();
+
                 closeKeyboard();
             }
         });

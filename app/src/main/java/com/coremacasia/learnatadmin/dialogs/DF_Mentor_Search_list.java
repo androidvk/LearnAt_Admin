@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.dialogs;
+package com.coremacasia.learnatadmin.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.DialogMentorSearchListBinding;
-import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
-import com.coremacasia.learnatadmin.menus.adapter.MentorsAdapter;
+import com.coremacasia.learnatadmin.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.adapter.MentorsAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 public class DF_Mentor_Search_list extends DialogFragment {

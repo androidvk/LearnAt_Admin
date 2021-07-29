@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.dialogs;
+package com.coremacasia.learnatadmin.dialogs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,23 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.DialogSubjectSelectorBinding;
-import com.coremacasia.learnatadmin.menus.helpers.SubjectHelper;
-import com.coremacasia.learnatadmin.menus.adapter.SubjectsAdapter;
+import com.coremacasia.learnatadmin.helpers.SubjectHelper;
+import com.coremacasia.learnatadmin.adapter.SubjectsAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;
 
-public class DialogSubjectSelector extends DialogFragment {
+public class DF_Selector_Subject extends DialogFragment {
     public static final String TAG = "DialogSubjectSelector";
     private static String CAT;
     DialogSubjectSelectorBinding binding;
 
-    public static DialogSubjectSelector newInstance(String CAT) {
-        DialogSubjectSelector.CAT = CAT;
+    public static DF_Selector_Subject newInstance(String CAT) {
+        DF_Selector_Subject.CAT = CAT;
 
         Bundle args = new Bundle();
 
-        DialogSubjectSelector fragment = new DialogSubjectSelector();
+        DF_Selector_Subject fragment = new DF_Selector_Subject();
         fragment.setArguments(args);
         return fragment;
     }

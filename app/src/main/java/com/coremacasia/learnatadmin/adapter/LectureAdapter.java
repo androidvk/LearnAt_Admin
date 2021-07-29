@@ -1,7 +1,8 @@
-package com.coremacasia.learnatadmin.menus.adapter;
+package com.coremacasia.learnatadmin.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -9,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.databinding.ListLectureBinding;
-import com.coremacasia.learnatadmin.menus.helpers.LectureHelper;
+import com.coremacasia.learnatadmin.helpers.LectureHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,9 +18,10 @@ import java.util.List;
 
 public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.Holder> {
     private List<LectureHelper> list;
+    private Context context;
 
     public LectureAdapter(Context context) {
-
+        this.context = context;
     }
 
     @NonNull
@@ -34,6 +36,13 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.Holder> 
     public void onBindViewHolder(@NonNull @NotNull Holder holder, int position) {
         LectureHelper helper=list.get(position);
         holder.tTitle.setText(helper.getTitle());
+        holder.tPosition.setText(""+(position+1));
+        holder.mainView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -47,10 +56,13 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.Holder> 
 
     public class Holder extends RecyclerView.ViewHolder {
         private static final String TAG = "Holder";
-        private TextView tTitle;
+        private TextView tTitle,tPosition;
+        private View mainView;
         public Holder(@NotNull @NonNull ListLectureBinding itemView) {
             super(itemView.getRoot());
             tTitle=itemView.textView35;
+            tPosition=itemView.textView47;
+            mainView=itemView.mainView;
         }
     }
 }

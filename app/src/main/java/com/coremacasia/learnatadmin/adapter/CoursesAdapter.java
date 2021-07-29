@@ -1,5 +1,6 @@
-package com.coremacasia.learnatadmin.menus.adapter;
+package com.coremacasia.learnatadmin.adapter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,15 +16,25 @@ import android.widget.TextView;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
-import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
-import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
+import com.coremacasia.learnatadmin.utility.Reference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 
 
+import org.jetbrains.annotations.NotNull;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
@@ -56,9 +67,20 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.tTitle.setText(helper.getTitle());
         if (helper.isIs_live()) {
             holder.tLive.setVisibility(View.VISIBLE);
+            if(helper.getStart_date()!=null){
+                holder.tStartDate.setVisibility(View.VISIBLE);
+                String myFormat = "dd-MMMM"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                holder.tStartDate.setText("Starting from: "+sdf.format(helper.getStart_date()));
+            }else holder.tStartDate.setVisibility(View.GONE);
         } else {
             holder.tLive.setVisibility(View.GONE);
+            holder.tStartDate.setVisibility(View.GONE);
         }
+        if(helper.getCourse_price()!=null){
+            holder.tPrice.setText("Rs."+helper.getCourse_price());
+        }
+        holder.tDescription.setText(helper.getDesc());
         new ImageSetterGlide().defaultImg(holder.context, helper.getThumbnail(),
                 holder.imageView);
 
@@ -87,6 +109,8 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
             }
         });
+
+
     }
 
     @Override
@@ -102,6 +126,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         private Context context;
         private View mainView;
         private Button bEdit;
+        private TextView tStartDate,tDescription,tPrice;
         public ViewHolder(FragmentCoursesBinding binding) {
             super(binding.getRoot());
             context = binding.getRoot().getContext();
@@ -111,6 +136,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             imageView = itemView.findViewById(R.id.imageView9);
             bEdit=binding.button9;
             mainView=binding.mainView;
+            tStartDate=binding.textView51;
+            tDescription=binding.textView53;
+            tPrice=binding.textView52;
         }
 
     }

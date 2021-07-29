@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.dialogs;
+package com.coremacasia.learnatadmin.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.databinding.DialogCatSelectorBinding;
 import com.coremacasia.learnatadmin.databinding.ListCatBinding;
-import com.coremacasia.learnatadmin.menus.helpers.CategoryHelper;
+import com.coremacasia.learnatadmin.helpers.CategoryHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class Dialog_CAT_Selector extends DialogFragment {
+public class Dialog_Selector_CAT extends DialogFragment {
     public static final String TAG = "Dialog_CAT_Selector";
 
     private DialogCatSelectorBinding binding;
 
-    public static Dialog_CAT_Selector newInstance() {
+    public static Dialog_Selector_CAT newInstance() {
 
         Bundle args = new Bundle();
-        Dialog_CAT_Selector fragment = new Dialog_CAT_Selector();
+        Dialog_Selector_CAT fragment = new Dialog_Selector_CAT();
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +64,7 @@ public class Dialog_CAT_Selector extends DialogFragment {
 
     }
 
-    class Adapter extends RecyclerView.Adapter<Dialog_CAT_Selector.Adapter.Holder> {
+    class Adapter extends RecyclerView.Adapter<Dialog_Selector_CAT.Adapter.Holder> {
 
         private ArrayList<CategoryHelper> list;
 

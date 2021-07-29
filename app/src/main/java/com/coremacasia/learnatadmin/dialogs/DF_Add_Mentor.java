@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.dialogs;
+package com.coremacasia.learnatadmin.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,8 +17,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.DialogAddMentorBinding;
-import com.coremacasia.learnatadmin.menus.helpers.CategoryHelper;
-import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.helpers.CategoryHelper;
+import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
@@ -123,10 +123,10 @@ public class DF_Add_Mentor extends DialogFragment implements AdapterView.OnItemS
         tCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog_CAT_Selector dialog=Dialog_CAT_Selector.newInstance();
-                dialog.show(getActivity().getSupportFragmentManager(),Dialog_CAT_Selector.TAG);
+                Dialog_Selector_CAT dialog= Dialog_Selector_CAT.newInstance();
+                dialog.show(getActivity().getSupportFragmentManager(), Dialog_Selector_CAT.TAG);
 
-                dialog.onCategoryClick(new Dialog_CAT_Selector.CategoryClickListener() {
+                dialog.onCategoryClick(new Dialog_Selector_CAT.CategoryClickListener() {
                     @Override
                     public void OnCategoryClick(CategoryHelper helper) {
                         tCategory.setText("Category: "+helper.getName());

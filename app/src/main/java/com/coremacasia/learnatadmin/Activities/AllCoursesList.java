@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.menus.adapter.CoursesAdapter;
+import com.coremacasia.learnatadmin.adapter.CoursesAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;

@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.menus.adapter;
+package com.coremacasia.learnatadmin.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,9 +19,9 @@ import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
 import com.coremacasia.learnatadmin.Activities.LectureList;
-import com.coremacasia.learnatadmin.menus.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.menus.dialogs.DF_Add_Course;
-import com.coremacasia.learnatadmin.menus.helpers.MentorHelper;
+import com.coremacasia.learnatadmin.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
 import com.google.gson.Gson;
