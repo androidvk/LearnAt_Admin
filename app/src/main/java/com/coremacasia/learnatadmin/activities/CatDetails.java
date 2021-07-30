@@ -1,6 +1,7 @@
-package com.coremacasia.learnatadmin.Activities;
+package com.coremacasia.learnatadmin.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,50 +17,73 @@ import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
 import com.coremacasia.learnatadmin.adapter.CATCourseAdapter;
 import com.coremacasia.learnatadmin.adapter.CATSubjectAdapter;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Subject;
-import com.coremacasia.learnatadmin.dialogs.DF_Selector_Course;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Course;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Subject;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Selector_Course;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
 
 public class CatDetails extends AppCompatActivity {
     private static final String TAG = "CatDetails";
-    private RecyclerView rvSubjects,rvCourses;
-    private Button bAddCourse,bAddSubject;
+    private RecyclerView rvSubjects, rvCourses;
+    private Button bAddCourse, bAddSubject;
     private String CAT;
     private TextView tSeeAllCourses;
+    private Button bPopularSelect, bUpcomingSelect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        CAT=getIntent().getStringExtra("cat");
+        CAT = getIntent().getStringExtra("cat");
         getSupportActionBar().setTitle(CAT);
-        rvSubjects=findViewById(R.id.rvCourses);
-        rvCourses=findViewById(R.id.recyclerViewcat);
-        bAddCourse=findViewById(R.id.button3);
-        bAddSubject=findViewById(R.id.button5);
-        tSeeAllCourses=findViewById(R.id.textView48);
+        rvSubjects = findViewById(R.id.rvCourses);
+        rvCourses = findViewById(R.id.recyclerViewcat);
+        bAddCourse = findViewById(R.id.button3);
+        bAddSubject = findViewById(R.id.button5);
+        tSeeAllCourses = findViewById(R.id.textView48);
+        bUpcomingSelect = findViewById(R.id.button11);
+        bPopularSelect = findViewById(R.id.button12);
         bAddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Course df_add_course=DF_Add_Course.newInstance(CAT, null);
-                df_add_course.show(getSupportFragmentManager(),DF_Add_Course.TAG);
+                Dialog_Add_Course dialog_add_course = Dialog_Add_Course.newInstance(CAT, null);
+                dialog_add_course.show(getSupportFragmentManager(), Dialog_Add_Course.TAG);
             }
         });
         bAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Subject df_add_subject=new DF_Add_Subject(CAT, 5, null, 0, null);
-                df_add_subject.show(getSupportFragmentManager(),DF_Add_Subject.TAG);
+                Dialog_Add_Subject dialog_add_subject = new Dialog_Add_Subject(CAT, 5, null, 0, null);
+                dialog_add_subject.show(getSupportFragmentManager(), Dialog_Add_Subject.TAG);
             }
         });
 
         tSeeAllCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Selector_Course dialog=new DF_Selector_Course();
-                dialog.show(getSupportFragmentManager(),DF_Selector_Course.TAG);
+                Dialog_Selector_Course dialog = new Dialog_Selector_Course();
+                dialog.show(getSupportFragmentManager(), Dialog_Selector_Course.TAG);
+            }
+        });
+        bPopularSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        bUpcomingSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("cat", CAT);
+                FragmentTransaction fragmenttransaction = getSupportFragmentManager().beginTransaction();
+                TrendingFrag frag = new TrendingFrag();
+                frag.setArguments(bundle);
+                fragmenttransaction.replace(R.id.fragment_container, frag)
+                        .addToBackStack(frag.TAG);
+                fragmenttransaction.commit();
             }
         });
 
@@ -72,7 +96,7 @@ public class CatDetails extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        CATCourseAdapter adapter=new CATCourseAdapter(CatDetails.this);
+        CATCourseAdapter adapter = new CATCourseAdapter(CatDetails.this);
         rvCourses.setLayoutManager(linearLayoutManager);
         rvCourses.setAdapter(adapter);
         rvCourses.setNestedScrollingEnabled(false);
@@ -91,6 +115,7 @@ public class CatDetails extends AppCompatActivity {
 
     private CategoryViewModel categoryViewModel;
     DocumentReference categoryRef;
+
     private void setSubjectView() {
         categoryRef = Reference.superRef(CAT);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -104,7 +129,7 @@ public class CatDetails extends AppCompatActivity {
                 new Observer<CommonDataModel>() {
                     @Override
                     public void onChanged(CommonDataModel commonDataModel) {
-                        adapter.setDataModel(commonDataModel,CAT);
+                        adapter.setDataModel(commonDataModel, CAT);
                         adapter.notifyDataSetChanged();
                     }
                 });

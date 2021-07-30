@@ -14,29 +14,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.adapter.CoursesAdapter;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesListBinding;
+import com.coremacasia.learnatadmin.helpers.CourseHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;
 
-public class DF_Selector_Course extends DialogFragment {
+public class Dialog_Selector_Course extends DialogFragment {
     public static final String TAG = "DF_Selector_Course";
 
     private FragmentCoursesListBinding binding;
 
-    public static DF_Selector_Course newInstance() {
+    public static Dialog_Selector_Course newInstance() {
         Bundle args = new Bundle();
-        DF_Selector_Course fragment = new DF_Selector_Course();
+        Dialog_Selector_Course fragment = new Dialog_Selector_Course();
         fragment.setArguments(args);
         return fragment;
     }
 
     private RecyclerView rvCourses;
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        binding=FragmentCoursesListBinding.inflate(LayoutInflater.from(inflater.getContext()));
-        rvCourses =binding.rvCourses;
+        binding = FragmentCoursesListBinding.inflate(LayoutInflater.from(inflater.getContext()));
+        rvCourses = binding.rvCourses;
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -45,7 +47,26 @@ public class DF_Selector_Course extends DialogFragment {
         rvCourses.setAdapter(adapter);
         adapter.setDataModel(MyStore.getCourseData());
         adapter.notifyDataSetChanged();
+
+        adapter.onCourseClick(new CoursesAdapter.OnCourseSelectedListener() {
+            @Override
+            public void onCourseClick(CourseHelper helper) {
+                listener.onCourseSelected(helper);
+                dismiss();
+            }
+        });
+
         return binding.getRoot();
+    }
+
+    public OnGetSelectedCourseListener listener;
+
+    public interface OnGetSelectedCourseListener {
+        void onCourseSelected(CourseHelper helper);
+    }
+
+    public void onCourseSelected(OnGetSelectedCourseListener listener) {
+        this.listener = listener;
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:name="com.coremacasia.learnatadmin.menus.courses.Courses"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AllCoursesList">
+    tools:context=".activities.AllCoursesList">
 
 
     <androidx.recyclerview.widget.RecyclerView

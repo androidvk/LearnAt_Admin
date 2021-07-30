@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DF_Add_Lecture extends DialogFragment {
+public class Dialog_Add_Lecture extends DialogFragment {
     private DialogLectureAdderBinding binding;
     public static final String TAG = "DF_Lecture_Adder";
     private EditText eTitle, eThumbnail, eDescription;
@@ -41,9 +41,9 @@ public class DF_Add_Lecture extends DialogFragment {
     private ImageView thumbnail,iBack;
     private CourseHelper courseHelper;
 
-    public static DF_Add_Lecture newInstance() {
+    public static Dialog_Add_Lecture newInstance() {
         Bundle args = new Bundle();
-        DF_Add_Lecture fragment = new DF_Add_Lecture();
+        Dialog_Add_Lecture fragment = new Dialog_Add_Lecture();
         fragment.setArguments(args);
         return fragment;
     }

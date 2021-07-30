@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
-import com.coremacasia.learnatadmin.Activities.LectureList;
+import com.coremacasia.learnatadmin.activities.LectureList;
 import com.coremacasia.learnatadmin.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Course;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
@@ -28,8 +28,10 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.ViewHolder> {
 
@@ -62,9 +64,20 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                 holder.tTitle.setText(helper.getTitle());
                 if (helper.isIs_live()) {
                     holder.tLive.setVisibility(View.VISIBLE);
+                    if(helper.getStart_date()!=null){
+                        holder.tStartDate.setVisibility(View.VISIBLE);
+                        String myFormat = "dd-MMMM"; //In which you need put here
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                        holder.tStartDate.setText("Starting from: "+sdf.format(helper.getStart_date()));
+                    }else holder.tStartDate.setVisibility(View.GONE);
                 } else {
                     holder.tLive.setVisibility(View.GONE);
+                    holder.tStartDate.setVisibility(View.GONE);
                 }
+                if(helper.getCourse_price()!=null){
+                    holder.tPrice.setText("Rs."+helper.getCourse_price());
+                }
+                holder.tDescription.setText(helper.getDesc());
                 new ImageSetterGlide().defaultImg(holder.context, helper.getThumbnail(),
                         holder.imageView);
 
@@ -92,9 +105,9 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                     public void onClick(View v) {
                         FragmentManager manager = ((AppCompatActivity) context)
                                 .getSupportFragmentManager();
-                        DF_Add_Course df_add_course = DF_Add_Course.newInstance(helper.getCategory_id()
+                        Dialog_Add_Course dialog_add_course = Dialog_Add_Course.newInstance(helper.getCategory_id()
                                 , helper);
-                        df_add_course.show(manager, DF_Add_Course.TAG);
+                        dialog_add_course.show(manager, Dialog_Add_Course.TAG);
                     }
                 });
 
@@ -121,7 +134,7 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
         private Context context;
         private View mainView;
         private Button bEdit;
-
+        private TextView tStartDate,tDescription,tPrice;
         public ViewHolder(FragmentCoursesBinding binding) {
             super(binding.getRoot());
             context = binding.getRoot().getContext();
@@ -131,7 +144,9 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
             imageView = itemView.findViewById(R.id.imageView9);
             bEdit = binding.button9;
             mainView = binding.mainView;
-
+            tStartDate=binding.textView51;
+            tDescription=binding.textView53;
+            tPrice=binding.textView52;
         }
 
     }

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentMentorBinding;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Mentor;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
 
@@ -71,9 +71,9 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
                 }else {
                     FragmentManager manager = ((AppCompatActivity) activity)
                             .getSupportFragmentManager();
-                    DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance(2,helper);
-                    df_add_mentor.show(manager,
-                            DF_Add_Mentor.TAG);
+                    Dialog_Add_Mentor dialog_add_mentor = Dialog_Add_Mentor.newInstance(2,helper);
+                    dialog_add_mentor.show(manager,
+                            Dialog_Add_Mentor.TAG);
 
                 }
 

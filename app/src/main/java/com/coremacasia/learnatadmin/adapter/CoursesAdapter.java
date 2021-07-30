@@ -1,6 +1,5 @@
 package com.coremacasia.learnatadmin.adapter;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,19 +16,11 @@ import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
 import com.coremacasia.learnatadmin.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Course;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Course;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
-import com.coremacasia.learnatadmin.utility.Reference;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.WriteBatch;
 
-
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +50,13 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         return new ViewHolder(FragmentCoursesBinding.inflate
                 (LayoutInflater.from(parent.getContext()), parent, false));
 
+    }
+    public OnCourseSelectedListener listener;
+    public interface OnCourseSelectedListener {
+        void onCourseClick(CourseHelper helper);
+    }
+    public void onCourseClick(OnCourseSelectedListener listener){
+        this.listener=listener;
     }
 
     @Override
@@ -94,7 +92,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                listener.onCourseClick(helper);
             }
         });
 
@@ -103,9 +101,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             public void onClick(View v) {
                 FragmentManager manager = ((AppCompatActivity) context)
                         .getSupportFragmentManager();
-                DF_Add_Course df_add_course= DF_Add_Course.newInstance(helper.getCategory_id()
+                Dialog_Add_Course dialog_add_course = Dialog_Add_Course.newInstance(helper.getCategory_id()
                         ,helper);
-                df_add_course.show(manager,DF_Add_Course.TAG);
+                dialog_add_course.show(manager, Dialog_Add_Course.TAG);
 
             }
         });

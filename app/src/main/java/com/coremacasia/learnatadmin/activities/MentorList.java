@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.Activities;
+package com.coremacasia.learnatadmin.activities;
 
 import android.os.Bundle;
 
@@ -19,7 +19,7 @@ import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.adapter.MentorsAdapter;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Mentor;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
@@ -82,8 +82,8 @@ public class MentorList extends Fragment {
         bAddMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Add_Mentor df_add_mentor = DF_Add_Mentor.newInstance(1, null);
-                df_add_mentor.show(getActivity().getSupportFragmentManager(), DF_Add_Mentor.TAG);
+                Dialog_Add_Mentor dialog_add_mentor = Dialog_Add_Mentor.newInstance(1, null);
+                dialog_add_mentor.show(getActivity().getSupportFragmentManager(), Dialog_Add_Mentor.TAG);
             }
         });
         setRecyclerViewMentor();

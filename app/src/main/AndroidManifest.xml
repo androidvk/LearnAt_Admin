@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LearnAtAdmin">
-        <activity android:name=".Activities.LectureList"
+        <activity android:name=".activities.LectureList"
             android:theme="@style/Theme.LearAt.DarkActionBar"/>
         <activity
-            android:name=".Activities.CatDetails"
+            android:name=".activities.CatDetails"
             android:theme="@style/Theme.LearAt.DarkActionBar"/>
         <activity
             android:name=".MainActivity"

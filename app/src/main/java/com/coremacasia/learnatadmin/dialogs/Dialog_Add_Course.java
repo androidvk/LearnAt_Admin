@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class DF_Add_Course extends DialogFragment {
+public class Dialog_Add_Course extends DialogFragment {
     public static final String TAG = "DF_Add_Course";
     private static String CAT;
     private static CourseHelper helper;
@@ -85,11 +85,11 @@ public class DF_Add_Course extends DialogFragment {
     private String selectedLanguage;
     private String sPrice;
     private Date selectedDate;
-    public static DF_Add_Course newInstance(String CAT1, CourseHelper helper1) {
+    public static Dialog_Add_Course newInstance(String CAT1, CourseHelper helper1) {
         CAT = CAT1;
         helper = helper1;
         Bundle args = new Bundle();
-        DF_Add_Course fragment = new DF_Add_Course();
+        Dialog_Add_Course fragment = new Dialog_Add_Course();
         fragment.setArguments(args);
         return fragment;
     }
@@ -385,12 +385,12 @@ public class DF_Add_Course extends DialogFragment {
         tMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Mentor_Search_list df = DF_Mentor_Search_list.newInstance();
+                Dialog_Mentor_Search_list df = Dialog_Mentor_Search_list.newInstance();
 
                 df.show(getActivity().getSupportFragmentManager(),
-                        DF_Mentor_Search_list.TAG);
+                        Dialog_Mentor_Search_list.TAG);
 
-                df.onMentorSelected(new DF_Mentor_Search_list.GetSelectedMentorListener() {
+                df.onMentorSelected(new Dialog_Mentor_Search_list.GetSelectedMentorListener() {
                     @Override
                     public void onMentorSelected(MentorHelper helper) {
                         selectedMentorHelper = helper;
@@ -407,10 +407,10 @@ public class DF_Add_Course extends DialogFragment {
         tSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DF_Selector_Subject dialog = DF_Selector_Subject.newInstance(CAT);
+                Dialog_Selector_Subject dialog = Dialog_Selector_Subject.newInstance(CAT);
                 dialog.show(getActivity().getSupportFragmentManager(),
-                        DF_Selector_Subject.TAG);
-                dialog.onSubjectClick(new DF_Selector_Subject.OnSubjectClickListener() {
+                        Dialog_Selector_Subject.TAG);
+                dialog.onSubjectClick(new Dialog_Selector_Subject.OnSubjectClickListener() {
                     @Override
                     public void onSubjectClick(SubjectHelper helper) {
                         selectedSubjectHelper = helper;

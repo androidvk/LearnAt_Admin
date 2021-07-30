@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCategoryBinding;
-import com.coremacasia.learnatadmin.Activities.CatDetails;
+import com.coremacasia.learnatadmin.activities.CatDetails;
 import com.coremacasia.learnatadmin.helpers.CategoryHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 

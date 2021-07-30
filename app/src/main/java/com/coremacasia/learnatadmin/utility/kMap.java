@@ -239,4 +239,5 @@ public class kMap {
     public static String course_lang="course_lang";
     public static String start_date="start_date";
 
+    public static String trending="trending";
 }

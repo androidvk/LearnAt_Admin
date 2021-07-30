@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentSubjectsBinding;
-import com.coremacasia.learnatadmin.dialogs.DF_Add_Subject;
+import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Subject;
 import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
@@ -75,8 +75,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
                     listener.onSubjectClick(helper);
                 } else {
                     FragmentManager manager = ((AppCompatActivity) activity).getSupportFragmentManager();
-                    DF_Add_Subject df_add_subject = new DF_Add_Subject(helper.getCategory(), 10, helper, position, list);
-                    df_add_subject.show(manager, DF_Add_Subject.TAG);
+                    Dialog_Add_Subject dialog_add_subject = new Dialog_Add_Subject(helper.getCategory(), 10, helper, position, list);
+                    dialog_add_subject.show(manager, Dialog_Add_Subject.TAG);
                 }
 
             }

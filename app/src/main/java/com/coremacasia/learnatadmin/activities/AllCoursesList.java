@@ -1,4 +1,4 @@
-package com.coremacasia.learnatadmin.Activities;
+package com.coremacasia.learnatadmin.activities;
 
 import android.os.Bundle;
 

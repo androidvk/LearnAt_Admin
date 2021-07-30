@@ -19,13 +19,13 @@ import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.adapter.MentorsAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
-public class DF_Mentor_Search_list extends DialogFragment {
+public class Dialog_Mentor_Search_list extends DialogFragment {
     public static final String TAG = "DF_Mentor_Search_list";
     private DialogMentorSearchListBinding binding;
 
-    public static DF_Mentor_Search_list newInstance() {
+    public static Dialog_Mentor_Search_list newInstance() {
         Bundle args = new Bundle();
-        DF_Mentor_Search_list fragment = new DF_Mentor_Search_list();
+        Dialog_Mentor_Search_list fragment = new Dialog_Mentor_Search_list();
         fragment.setArguments(args);
         return fragment;
     }

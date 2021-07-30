@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DF_Add_Subject extends DialogFragment {
+public class Dialog_Add_Subject extends DialogFragment {
     public static final String TAG = "DF_Add_Subject";
     private String CAT;
     private DialogAddSubjectBinding binding;
@@ -47,8 +47,8 @@ public class DF_Add_Subject extends DialogFragment {
     private ImageView bBack;
     private Button bSubmit;
 
-    public DF_Add_Subject(String CAT, int i, SubjectHelper helper,
-                          int position, ArrayList<SubjectHelper> list) {
+    public Dialog_Add_Subject(String CAT, int i, SubjectHelper helper,
+                              int position, ArrayList<SubjectHelper> list) {
         this.CAT = CAT;
         this.i = i;
         this.helper = helper;

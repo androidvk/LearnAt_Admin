@@ -21,17 +21,17 @@ import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;
 
-public class DF_Selector_Subject extends DialogFragment {
+public class Dialog_Selector_Subject extends DialogFragment {
     public static final String TAG = "DialogSubjectSelector";
     private static String CAT;
     DialogSubjectSelectorBinding binding;
 
-    public static DF_Selector_Subject newInstance(String CAT) {
-        DF_Selector_Subject.CAT = CAT;
+    public static Dialog_Selector_Subject newInstance(String CAT) {
+        Dialog_Selector_Subject.CAT = CAT;
 
         Bundle args = new Bundle();
 
-        DF_Selector_Subject fragment = new DF_Selector_Subject();
+        Dialog_Selector_Subject fragment = new Dialog_Selector_Subject();
         fragment.setArguments(args);
         return fragment;
     }

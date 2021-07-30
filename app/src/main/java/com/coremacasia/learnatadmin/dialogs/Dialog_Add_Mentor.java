@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DF_Add_Mentor extends DialogFragment implements AdapterView.OnItemSelectedListener {
+public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnItemSelectedListener {
     public static final String TAG = "DF_Add_Mentor";
     private static int from;
     private static MentorHelper selectedMentorHelper;
@@ -48,11 +48,11 @@ public class DF_Add_Mentor extends DialogFragment implements AdapterView.OnItemS
     private Button bSubmit;
     private ImageView iBack;
     private TextView tCategory;
-    public static DF_Add_Mentor newInstance(int i, MentorHelper helper) {
-        DF_Add_Mentor.from = i;
+    public static Dialog_Add_Mentor newInstance(int i, MentorHelper helper) {
+        Dialog_Add_Mentor.from = i;
         selectedMentorHelper = helper;
         Bundle args = new Bundle();
-        DF_Add_Mentor fragment = new DF_Add_Mentor();
+        Dialog_Add_Mentor fragment = new Dialog_Add_Mentor();
         fragment.setArguments(args);
         return fragment;
     }

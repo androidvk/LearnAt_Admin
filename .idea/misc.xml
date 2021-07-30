@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/activity_cat_details.xml" value="0.18425925925925926" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/dialog_add_course.xml" value="0.18425925925925926" />
-        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_courses.xml" value="0.37335834896810505" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_courses.xml" value="0.18425925925925926" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_upcoming.xml" value="0.18425925925925926" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/list_upcoming_courses.xml" value="0.259375" />
       </map>
     </option>
   </component>
