@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentMentorBinding;
+import com.coremacasia.learnatadmin.databinding.ListMentorsBinding;
 import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 
@@ -51,7 +52,7 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(FragmentMentorBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(ListMentorsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -138,7 +139,7 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
         private ImageView imageView;
         private TextView tName;
         private View mainView;
-        public ViewHolder(FragmentMentorBinding binding) {
+        public ViewHolder(ListMentorsBinding binding) {
             super(binding.getRoot());
             tName = binding.textView40;
             imageView = binding.imageView12;

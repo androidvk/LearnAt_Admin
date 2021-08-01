@@ -21,7 +21,7 @@
         android:id="@+id/nav_mentors"
         android:name="com.coremacasia.learnatadmin.activities.MentorList"
         android:label="@string/Mentors"
-        tools:layout="@layout/fragment_mentor_list" />
+        tools:layout="@layout/fragment_mentor" />
     <fragment
         android:id="@+id/nav_subjects"
         android:name="com.coremacasia.learnatadmin.activities.SubjectsList"

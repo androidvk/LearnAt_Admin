@@ -1,5 +1,6 @@
 package com.coremacasia.learnatadmin.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,12 +38,15 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
+
 public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder> {
     private static final String TAG = "UpcomingAdapter";
     private CommonDataModel dataModel;
     private String CAT;
     private TextView tAdd;
-    private TextView tSave;
+    private CircularProgressButton tSave;
+    private String FROM;
     private Context activity;
     private ArrayList<String> list = new ArrayList<>();
     private ViewGroup parent;
@@ -54,12 +58,18 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder
     }
 
     public void setDataModel(CommonDataModel dataModel, String CAT,
-                             TextView tAdd, TextView tSave) {
+                             TextView tAdd, CircularProgressButton tSave, String FROM) {
         this.dataModel = dataModel;
-        list = dataModel.getTrending();
+        if(FROM.equals("trending")){
+            list = dataModel.getTrending();
+        }else if (FROM.equals("popular")){
+            list = dataModel.getPopular();
+        }
+
         this.CAT = CAT;
         this.tAdd = tAdd;
         this.tSave = tSave;
+        this.FROM = FROM;
         tAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,20 +89,27 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder
         tSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tSave.startAnimation();
                 saveData();
             }
         });
     }
 
     private void saveData() {
+
         DocumentReference reference= Reference.superRef(CAT);
         Map map=new HashMap();
-        map.put(kMap.trending,list);
+        if(FROM.equals("trending")){
+            map.put(kMap.trending,list);
+        }else if (FROM.equals("popular")){
+            map.put(kMap.popular,list);
+        }
+
         reference.set(map, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isComplete()){
-                    Log.e(TAG, "onComplete: Updated" );
+                    tSave.revertAnimation();
                 }
             }
         });
@@ -150,6 +167,14 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder
                     @Override
                     public void onClick(View v) {
 
+                    }
+                });
+
+                holder.bRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.remove(position);
+                        notifyDataSetChanged();
                     }
                 });
 

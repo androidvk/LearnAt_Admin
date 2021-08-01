@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.coremacasia.learnatadmin.R;
+import com.coremacasia.learnatadmin.adapter.MentorSelectorAdapter;
 import com.coremacasia.learnatadmin.adapter.TrendingAdapter;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
-import com.coremacasia.learnatadmin.databinding.FragmentTrendingBinding;
+import com.coremacasia.learnatadmin.databinding.FragmentMentorSelectorBinding;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -26,21 +28,21 @@ import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TrendingFrag#newInstance} factory method to
+ * Use the {@link MentorSelectorFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrendingFrag extends Fragment {
+public class MentorSelectorFrag extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String TAG = "Upcoming";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String CAT,FROM;
-    public TrendingFrag() {
+    public static final String TAG = "MentorSelectorFrag";
+    public MentorSelectorFrag() {
         // Required empty public constructor
     }
 
@@ -50,18 +52,18 @@ public class TrendingFrag extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Upcoming.
+     * @return A new instance of fragment MentorSelectorFrag.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrendingFrag newInstance(String param1, String param2) {
-        TrendingFrag fragment = new TrendingFrag();
+    public static MentorSelectorFrag newInstance(String param1, String param2) {
+        MentorSelectorFrag fragment = new MentorSelectorFrag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
+    private String CAT,FROM;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,16 +75,17 @@ public class TrendingFrag extends Fragment {
         }
     }
 
-    private FragmentTrendingBinding binding;
+    private FragmentMentorSelectorBinding binding;
     private TextView tAdd;
     private CircularProgressButton tSave;
     private TextView tTrending;
     private RecyclerView recyclerView;
+    private CategoryViewModel categoryViewModel;
+    DocumentReference categoryRef;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding= FragmentTrendingBinding.inflate(LayoutInflater.from(inflater.getContext()));
+        binding = FragmentMentorSelectorBinding.inflate(LayoutInflater.from(inflater.getContext()));
         tAdd=binding.textView55;
         tTrending =binding.textView54;
         recyclerView=binding.recyclerView2;
@@ -94,22 +97,14 @@ public class TrendingFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setRecyclerView();
-        if(FROM.equals("trending")){
-            tTrending.setText("Trending Courses");
-        }else if(FROM.equals("popular")){
-            tTrending.setText("Popular Courses");
-
-        }
     }
 
-    private CategoryViewModel categoryViewModel;
-    DocumentReference categoryRef;
     private void setRecyclerView() {
         categoryRef = Reference.superRef(CAT);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        TrendingAdapter adapter=new TrendingAdapter(getActivity());
+        MentorSelectorAdapter adapter=new MentorSelectorAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         categoryViewModel.getCommonMutableLiveData(categoryRef).observe(getActivity(),

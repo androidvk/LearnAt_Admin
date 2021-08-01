@@ -240,4 +240,6 @@ public class kMap {
     public static String start_date="start_date";
 
     public static String trending="trending";
+    public static String popular="popular";
+
 }

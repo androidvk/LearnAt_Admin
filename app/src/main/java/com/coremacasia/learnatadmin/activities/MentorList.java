@@ -68,7 +68,7 @@ public class MentorList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mentor_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_mentor, container, false);
         bAddMentor = view.findViewById(R.id.button7);
         rvMentor = view.findViewById(R.id.rvMentor);
         // Set the adapter

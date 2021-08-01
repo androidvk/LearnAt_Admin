@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".activities.TrendingFrag">
+    tools:context=".activities.MentorSelectorFrag">
 
 
     <TextView
@@ -16,7 +16,7 @@
         android:id="@+id/textView54"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trending Courses"
+        android:text="@string/Mentors"
         android:textColor="@color/black"
         android:textSize="@dimen/medium_1"
         app:layout_constraintStart_toStartOf="parent"

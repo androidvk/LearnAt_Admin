@@ -66,7 +66,8 @@ dependencies {
 
     //https://github.com/alexmamo/FirestoreDocument-Android/tree/master/firestore-document
     implementation 'com.github.alexmamo:FirestoreDocument-Android:0.1.5'
-
+    //https://github.com/leandroBorgesFerreira/LoadingButtonAndroid
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
     //https://github.com/TinkoffCreditSystems/ScrollingPagerIndicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
 
