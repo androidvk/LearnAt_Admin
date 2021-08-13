@@ -64,6 +64,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.aabhasr1:OtpView:v1.1.2'
 
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //https://github.com/nabinbhandari/Android-Permissions
+    implementation 'com.nabinbhandari.android:permissions:3.8'
+
     //https://github.com/alexmamo/FirestoreDocument-Android/tree/master/firestore-document
     implementation 'com.github.alexmamo:FirestoreDocument-Android:0.1.5'
     //https://github.com/leandroBorgesFerreira/LoadingButtonAndroid

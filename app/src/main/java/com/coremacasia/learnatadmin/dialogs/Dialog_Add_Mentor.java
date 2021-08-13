@@ -1,6 +1,12 @@
 package com.coremacasia.learnatadmin.dialogs;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -31,6 +42,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,8 +61,12 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
     private EditText eName, eQualification, eImageLink;
     private DialogAddMentorBinding binding;
     private Button bSubmit;
-    private ImageView iBack;
+    private ImageView iBack, iImage;
     private TextView tCategory;
+    private DocumentReference commonListRef = Reference.superRef(RMAP.list);
+    private List<CategoryHelper> categoryList = new ArrayList<>();
+    private String sName, sQualification, sCAT, sImagelink;
+
     public static Dialog_Add_Mentor newInstance(int i, MentorHelper helper) {
         Dialog_Add_Mentor.from = i;
         selectedMentorHelper = helper;
@@ -65,10 +84,10 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         eName = binding.editTextTextPersonName4;
         eQualification = binding.editTextTextPersonName8;
         eImageLink = binding.editTextTextPersonName9;
-
+        iImage = binding.imageView16;
         bSubmit = binding.button8;
         iBack = binding.imageView13;
-        tCategory=binding.textView26;
+        tCategory = binding.textView26;
         return binding.getRoot();
     }
 
@@ -77,23 +96,17 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         return R.style.Theme_LearnAt_FullScreenDialog;
     }
 
-    private DocumentReference commonListRef = Reference.superRef(RMAP.list);
-
-    private List<CategoryHelper> categoryList = new ArrayList<>();
-
-    private String sName, sQualification, sCAT, sImagelink;
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(from==2){
+        if (from == 2) {
             bSubmit.setText("Update");
-            sCAT=selectedMentorHelper.getCategory();
+            sCAT = selectedMentorHelper.getCategory();
             eImageLink.setText(selectedMentorHelper.getImage());
             //eQualification.setText(selectedMentorHelper.get);
             eName.setText(selectedMentorHelper.getName());
-            tCategory.setText("Category: "+selectedMentorHelper.getCategory());
+            tCategory.setText("Category: " + selectedMentorHelper.getCategory());
         }
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,11 +116,11 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                 sImagelink = eImageLink.getText().toString().trim();
 
                 if (!sName.equals("") /*&& !sQualification.equals("")*/ && !sImagelink.equals("")) {
-                   if(from==1){
-                       writeData();
-                   }else {
-                       updateData();
-                   }
+                    if (from == 1) {
+                        writeData();
+                    } else {
+                        updateData();
+                    }
 
                 } else Toast.makeText(getActivity(), "Input Fields", Toast.LENGTH_SHORT).show();
             }
@@ -123,14 +136,14 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         tCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog_Selector_CAT dialog= Dialog_Selector_CAT.newInstance();
+                Dialog_Selector_CAT dialog = Dialog_Selector_CAT.newInstance();
                 dialog.show(getActivity().getSupportFragmentManager(), Dialog_Selector_CAT.TAG);
 
                 dialog.onCategoryClick(new Dialog_Selector_CAT.CategoryClickListener() {
                     @Override
                     public void OnCategoryClick(CategoryHelper helper) {
-                        tCategory.setText("Category: "+helper.getName());
-                        sCAT=helper.getId();
+                        tCategory.setText("Category: " + helper.getName());
+                        sCAT = helper.getId();
                     }
 
                     @Override
@@ -141,7 +154,41 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
 
             }
         });
+
+        iImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Permissions.check(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE,
+                        null, new PermissionHandler() {
+                            @Override
+                            public void onGranted() {
+                                CropImage.activity()
+                                        .setGuidelines(CropImageView.Guidelines.ON)
+                                        .start(getActivity());
+                            }
+                        });
+            }
+        });
+
+
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: " );
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Log.e(TAG, "onActivityResult: "+result.getUri() );
+                iImage.setImageURI(result.getUri());
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e(TAG, "onActivityResult: ",error );
+            }
+        }
+    }
+
 
     private void updateData() {
         String mentor_id = selectedMentorHelper.getMentor_id();
@@ -205,11 +252,10 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
     }
 
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int position, long id) {
-        if(categoryList.size()!=0){
+        if (categoryList.size() != 0) {
             sCAT = categoryList.get(position).getId();
         }
     }

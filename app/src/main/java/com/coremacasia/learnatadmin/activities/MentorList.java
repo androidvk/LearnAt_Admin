@@ -1,5 +1,8 @@
 package com.coremacasia.learnatadmin.activities;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,8 @@ import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
 import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.google.firebase.firestore.DocumentReference;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * A fragment representing a list of Items.
  */
 public class MentorList extends Fragment {
-
+    private static final String TAG = "MentorList";
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -72,8 +78,25 @@ public class MentorList extends Fragment {
         bAddMentor = view.findViewById(R.id.button7);
         rvMentor = view.findViewById(R.id.rvMentor);
         // Set the adapter
-
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(getActivity());
         return view;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: " );
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Log.e(TAG, "onActivityResult: "+result.getUri() );
+               // iImage.setImageURI(result.getUri());
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e(TAG, "onActivityResult: ",error );
+            }
+        }
     }
 
     @Override
