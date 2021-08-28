@@ -72,7 +72,8 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
                 }else {
                     FragmentManager manager = ((AppCompatActivity) activity)
                             .getSupportFragmentManager();
-                    Dialog_Add_Mentor dialog_add_mentor = Dialog_Add_Mentor.newInstance(2,helper);
+                    Dialog_Add_Mentor dialog_add_mentor =
+                            Dialog_Add_Mentor.newInstance(2,helper);
                     dialog_add_mentor.show(manager,
                             Dialog_Add_Mentor.TAG);
 

@@ -78,26 +78,11 @@ public class MentorList extends Fragment {
         bAddMentor = view.findViewById(R.id.button7);
         rvMentor = view.findViewById(R.id.rvMentor);
         // Set the adapter
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(getActivity());
+
+
         return view;
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.e(TAG, "onActivityResult: " );
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Log.e(TAG, "onActivityResult: "+result.getUri() );
-               // iImage.setImageURI(result.getUri());
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-                Log.e(TAG, "onActivityResult: ",error );
-            }
-        }
-    }
+
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -112,11 +97,13 @@ public class MentorList extends Fragment {
         setRecyclerViewMentor();
 
     }
+
     private CommonDataViewModel viewModel;
     private DocumentReference commonListRef;
+
     private void setRecyclerViewMentor() {
-        commonListRef=Reference.superRef(RMAP.list);
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(),2);
+        commonListRef = Reference.superRef(RMAP.list);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         MentorsAdapter adapter = new MentorsAdapter(getActivity(), 2);
         rvMentor.setLayoutManager(linearLayoutManager);
         rvMentor.setAdapter(adapter);
