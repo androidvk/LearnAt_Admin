@@ -38,7 +38,7 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
     private CommonDataModel commonDataModel;
     private List<String> list = new ArrayList<>();
     private Context context;
-
+    private String imageLink;
     public void setDataModel(CommonDataModel commonDataModel) {
         this.commonDataModel = commonDataModel;
         list = commonDataModel.getCourse_id();
@@ -85,6 +85,7 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                 for (MentorHelper helper1 : mentorList) {
                     if (helper.getMentor_id().equals(helper1.getMentor_id())) {
                         holder.tMentorName.setText(helper1.getName());
+                        imageLink = helper1.getImage();
                     }
                 }
 
@@ -111,9 +112,16 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
                     }
                 });
 
+                String wallpaper = "https://learnat.in/wp-content/uploads/2021/08/17879-scaled-e1628793009125.jpg";
+                new ImageSetterGlide().defaultImg(holder.itemView.getContext(), wallpaper,
+                        holder.imageView);
+
+                new ImageSetterGlide().defaultImg(holder.itemView.getContext(), imageLink,
+                        holder.teacherPng);
                 return;
             }
         }
+
 
     }
 
@@ -130,7 +138,7 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tTitle, tMentorName, tLive;
-        private ImageView imageView;
+        private ImageView imageView,teacherPng;
         private Context context;
         private View mainView;
         private Button bEdit;
@@ -138,15 +146,16 @@ public class CATCourseAdapter extends RecyclerView.Adapter<CATCourseAdapter.View
         public ViewHolder(FragmentCoursesBinding binding) {
             super(binding.getRoot());
             context = binding.getRoot().getContext();
-            tTitle = itemView.findViewById(R.id.textView43);
-            tMentorName = itemView.findViewById(R.id.textView44);
+            tTitle = itemView.findViewById(R.id.textView24);
+            tMentorName = itemView.findViewById(R.id.textView45);
             tLive = itemView.findViewById(R.id.textView39);
             imageView = itemView.findViewById(R.id.imageView9);
-            bEdit = binding.button9;
-            mainView = binding.mainView;
-            tStartDate=binding.textView51;
-            tDescription=binding.textView53;
-            tPrice=binding.textView52;
+            bEdit=binding.button9;
+            mainView=binding.mainView;
+            tStartDate=binding.textview101;
+            tDescription=binding.textView43;
+            teacherPng = itemView.findViewById(R.id.imageView15);
+            tPrice=binding.textView57;
         }
 
     }

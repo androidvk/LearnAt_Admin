@@ -59,6 +59,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.type.DateTime;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -69,6 +70,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +85,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
     private static final int PICK_IMAGE = 101;
     private static int from;
     private static MentorHelper selectedMentorHelper;
-    private EditText eName, eQualification, eImageLink;
+    private EditText eName, eQualification;
     private DialogAddMentorBinding binding;
     private Button bSubmit, bUpdateImage;
     private ImageView iBack, iImage;
@@ -108,7 +110,6 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         binding = DialogAddMentorBinding.inflate(LayoutInflater.from(inflater.getContext()));
         eName = binding.editTextTextPersonName4;
         eQualification = binding.editTextTextPersonName8;
-        eImageLink = binding.editTextTextPersonName9;
         iImage = binding.imageView16;
         bSubmit = binding.button8;
         iBack = binding.imageView13;
@@ -130,8 +131,8 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         if (from == 2) {
             bSubmit.setText("Update");
             sCAT = selectedMentorHelper.getCategory();
-            eImageLink.setText(selectedMentorHelper.getImage());
             //eQualification.setText(selectedMentorHelper.get);
+            sImagelink=selectedMentorHelper.getImage();
             eName.setText(selectedMentorHelper.getName());
             tCategory.setText("Category: " + selectedMentorHelper.getCategory());
             new ImageSetterGlide().defaultImg(getContext(),
@@ -142,8 +143,6 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
             public void onClick(View v) {
                 sName = eName.getText().toString().trim();
                 sQualification = eQualification.getText().toString().trim();
-                sImagelink = eImageLink.getText().toString().trim();
-
                 if (!sName.equals("") /*&& !sQualification.equals("")*/ && !sImagelink.equals("")) {
                     if (from == 1) {
                         writeData();
@@ -282,7 +281,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
 
         }
     }
-
+    StorageReference storageReference;
     private void imageUploader(Uri uri, File compressedImage) {
         Log.d(TAG, "imageUploader: ");
         //Get Image Size
@@ -298,8 +297,13 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                 .setCustomMetadata(kMap.width, String.valueOf(imageWidth))
                 .setCustomMetadata(kMap.height, String.valueOf(imageHeight)).build();
 
-        StorageReference storageReference = Reference.getMentorImageRef().
-                child(selectedMentorHelper.getMentor_id() + ".webp");
+        if(selectedMentorHelper!=null){
+            storageReference = Reference.getMentorImageRef().
+                    child(selectedMentorHelper.getMentor_id() + ".webp");
+        }else {
+             storageReference = Reference.getMentorImageRef().
+                    child(new Date().getTime() + ".webp");
+        }
         bSubmit.setEnabled(false);
         storageReference.putFile(Uri.fromFile(compressedImage), metadata).addOnCompleteListener
                 (new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -359,6 +363,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
 
 
     private void updateData() {
+        Log.e(TAG, "updateData: " +sImagelink);
         String mentor_id = selectedMentorHelper.getMentor_id();
         Map map = new HashMap();
         map.put(kMap.name, sName);
@@ -396,6 +401,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
     }
 
     private void writeData() {
+        Log.e(TAG, "writeData: " );
         DocumentReference documentReference = FirebaseFirestore.
                 getInstance().collection("df").document();
         String mentor_id = documentReference.getId();
