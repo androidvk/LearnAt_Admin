@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="@color/white"
     android:name="com.coremacasia.learnatadmin.menus.Subjects"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
     tools:context=".activities.SubjectsList"
     tools:listitem="@layout/fragment_subjects" />

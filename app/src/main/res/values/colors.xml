@@ -26,4 +26,10 @@
     <color name="bluemid">#2B9BFF</color>
     <color name="bluehigh">#0A2C92</color>
     <color name="twhite50">#F5FFFFFF</color>
+    <color name="comp_color">#F1FF68</color>
+    <color name="ent_color">#FFCC82</color>
+    <color name="itcoding_color">#86FD8A</color>
+    <color name="comm_color">#7DFFF3</color>
+    <color name="sc_school_color">#7ED7FF</color>
+
 </resources>

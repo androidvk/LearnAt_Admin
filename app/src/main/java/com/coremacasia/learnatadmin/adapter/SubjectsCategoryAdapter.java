@@ -1,10 +1,14 @@
 package com.coremacasia.learnatadmin.adapter;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +17,20 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
 import com.coremacasia.learnatadmin.databinding.FragmentSubjectsBinding;
 import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Subject;
 import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
+import com.coremacasia.learnatadmin.utility.RMAP;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHolder>
+public class SubjectsCategoryAdapter extends RecyclerView.Adapter<SubjectsCategoryAdapter.ViewHolder>
         implements Filterable {
     private static final String TAG = "SubjectsAdapter";
     private ArrayList<SubjectHelper> list = new ArrayList<>();
@@ -31,12 +38,15 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
     private CommonDataModel commonDataModel;
     private Context activity;
     private int from;
+    private ArrayList<String> selectedSubjectsList;
     private String CAT;
 
-    public SubjectsAdapter(Context activity, int from) {
+    public SubjectsCategoryAdapter(Context activity, int from,
+                                   ArrayList<String> selectedSubjectsList) {
 
         this.activity = activity;
         this.from = from;
+        this.selectedSubjectsList = selectedSubjectsList;
     }
 
     @Override
@@ -63,16 +73,47 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        SubjectHelper helper = filteredSubjectList.get(position);
+        SubjectHelper helper = filteredSubjectList.get(holder.getAbsoluteAdapterPosition());
         holder.tCode.setText(helper.getCategory() + " | " + helper.getSubject_code());
         holder.tDesc.setText(helper.getDesc());
         holder.tTitle.setText(helper.getTitle());
         new ImageSetterGlide().defaultImg(holder.context, helper.getIcon(), holder.imageView);
+
+        if(helper.getCategory().equals(RMAP.comp_exam)){
+            holder.mainView.setCardBackgroundColor(holder.context.getResources()
+                    .getColor(R.color.comp_color));
+
+        }else if(helper.getCategory().equals(RMAP.ent_exam)){
+            holder.mainView.setCardBackgroundColor(holder.context.getResources()
+                    .getColor(R.color.ent_color));
+        }else if(helper.getCategory().equals(RMAP.itcoding)){
+            holder.mainView.setCardBackgroundColor(holder.context.getResources()
+                    .getColor(R.color.itcoding_color));
+        }else if(helper.getCategory().equals(RMAP.comm)){
+            holder.mainView.setCardBackgroundColor(holder.context.getResources()
+                    .getColor(R.color.comm_color));
+        }else if (helper.getCategory().equals(RMAP.sc_school)){
+            holder.mainView.setCardBackgroundColor(holder.context.getResources()
+                    .getColor(R.color.sc_school_color));
+        }
+
+        if(selectedSubjectsList!=null){
+            for(String s:selectedSubjectsList){
+                if(s.equals(helper.getSubject_id())){
+                    holder.tTitle.setText("✅ "+helper.getTitle());
+                    holder.selected=true;
+                }
+            }
+        }
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e(TAG, "onClick: "+holder.selected );
                 if (from == 1) {
-                    listener.onSubjectClick(helper);
+                    if(!holder.selected){
+                        listener.onSubjectClick(helper);
+                    }
+
                 } else {
                     FragmentManager manager = ((AppCompatActivity) activity).getSupportFragmentManager();
                     Dialog_Add_Subject dialog_add_subject = new Dialog_Add_Subject(helper.getCategory(), 10, helper, position, list);
@@ -88,6 +129,7 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
         return filteredSubjectList.size();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setDataModel(CommonDataModel commonDataModel) {
         this.commonDataModel = commonDataModel;
         if (CAT != null) {
@@ -96,8 +138,10 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
                     list.add(sh);
                 }
             }
-        } else list = commonDataModel.getAll_subjects();
-
+        } else{
+            list = commonDataModel.getAll_subjects();
+            list.sort((Comparator.comparing(SubjectHelper::getCategory)));
+        }
 
     }
 
@@ -144,8 +188,8 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
         private TextView tDesc, tCode, tAllDetails, tTitle;
         private ImageView imageView;
         private Context context;
-        private View mainView;
-
+        private CardView mainView;
+        private boolean selected=false;
         public ViewHolder(FragmentSubjectsBinding binding) {
             super(binding.getRoot());
             tCode = binding.textView30;

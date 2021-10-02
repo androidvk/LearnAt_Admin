@@ -29,7 +29,7 @@ public class CatDetails extends AppCompatActivity {
     private Button bAddCourse, bAddSubject;
     private String CAT;
     private TextView tSeeAllCourses;
-    private Button bPopularSelect, bUpcomingSelect,bMentorSelect;
+    private Button bPopularSelect, bTrendingSelect,bMentorSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class CatDetails extends AppCompatActivity {
         bAddCourse = findViewById(R.id.button3);
         bAddSubject = findViewById(R.id.button5);
         tSeeAllCourses = findViewById(R.id.textView48);
-        bUpcomingSelect = findViewById(R.id.button11);
+        bTrendingSelect = findViewById(R.id.button11);
         bPopularSelect = findViewById(R.id.button12);
         bMentorSelect=findViewById(R.id.button14);
         bAddCourse.setOnClickListener(new View.OnClickListener() {
@@ -75,21 +75,21 @@ public class CatDetails extends AppCompatActivity {
                 bundle.putString("cat", CAT);
                 bundle.putString("from","popular");
                 FragmentTransaction fragmenttransaction = getSupportFragmentManager().beginTransaction();
-                TrendingFrag frag = new TrendingFrag();
+                TrendingSelectorFrag frag = new TrendingSelectorFrag();
                 frag.setArguments(bundle);
                 fragmenttransaction.replace(R.id.fragment_container, frag)
                         .addToBackStack(frag.TAG);
                 fragmenttransaction.commit();
             }
         });
-        bUpcomingSelect.setOnClickListener(new View.OnClickListener() {
+        bTrendingSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("cat", CAT);
                 bundle.putString("from","trending");
                 FragmentTransaction fragmenttransaction = getSupportFragmentManager().beginTransaction();
-                TrendingFrag frag = new TrendingFrag();
+                TrendingSelectorFrag frag = new TrendingSelectorFrag();
                 frag.setArguments(bundle);
                 fragmenttransaction.replace(R.id.fragment_container, frag)
                         .addToBackStack(frag.TAG);

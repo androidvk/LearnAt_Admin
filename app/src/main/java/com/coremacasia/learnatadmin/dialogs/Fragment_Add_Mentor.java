@@ -2,10 +2,7 @@ package com.coremacasia.learnatadmin.dialogs;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.app.Activity.RESULT_OK;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,18 +23,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.coremacasia.learnatadmin.R;
+import com.coremacasia.learnatadmin.adapter.SubjectListAdapter;
+import com.coremacasia.learnatadmin.commons.CommonDataModel;
+import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddMentorBinding;
 import com.coremacasia.learnatadmin.helpers.CategoryHelper;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
@@ -48,7 +47,6 @@ import com.coremacasia.learnatadmin.utility.RMAP;
 import com.coremacasia.learnatadmin.utility.Reference;
 import com.coremacasia.learnatadmin.utility.kMap;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -59,11 +57,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.type.DateTime;
-import com.nabinbhandari.android.permissions.PermissionHandler;
-import com.nabinbhandari.android.permissions.Permissions;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -80,25 +73,31 @@ import static android.os.Build.VERSION.SDK_INT;
 import id.zelory.compressor.Compressor;
 
 
-public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnItemSelectedListener {
-    public static final String TAG = "DF_Add_Mentor";
+public class Fragment_Add_Mentor extends Fragment implements AdapterView.OnItemSelectedListener {
+    public static final String TAG = "Fragment_Add_Mentor";
     private static final int PICK_IMAGE = 101;
     private static int from;
-    private static MentorHelper selectedMentorHelper;
+    private MentorHelper selectedMentorHelper;
     private EditText eName, eQualification;
     private DialogAddMentorBinding binding;
     private Button bSubmit, bUpdateImage;
     private ImageView iBack, iImage;
     private TextView tCategory;
+    private Button bAddMentor;
     private DocumentReference commonListRef = Reference.superRef(RMAP.list);
+    private CommonDataViewModel viewModel;
     private List<CategoryHelper> categoryList = new ArrayList<>();
     private String sName, sQualification, sCAT, sImagelink;
+    private RecyclerView recyclerViewSubjects;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private String mentorId;
 
-    public static Dialog_Add_Mentor newInstance(int i, MentorHelper helper) {
-        Dialog_Add_Mentor.from = i;
-        selectedMentorHelper = helper;
+    public static Fragment_Add_Mentor newInstance(String param1, String param2) {
         Bundle args = new Bundle();
-        Dialog_Add_Mentor fragment = new Dialog_Add_Mentor();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        Fragment_Add_Mentor fragment = new Fragment_Add_Mentor();
         fragment.setArguments(args);
         return fragment;
     }
@@ -115,12 +114,47 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         iBack = binding.imageView13;
         tCategory = binding.textView26;
         bUpdateImage = binding.button18;
+        bAddMentor = binding.textView59;
+        recyclerViewSubjects = binding.recyclerView3;
         return binding.getRoot();
     }
 
     @Override
-    public int getTheme() {
-        return R.style.Theme_LearnAt_FullScreenDialog;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            from = getArguments().getInt("from");
+            mentorId = getArguments().getString("helper");
+            if (mentorId != null) {
+                Gson gson = new Gson();
+                MentorHelper helper = gson.fromJson(getArguments().getString("helper"), MentorHelper.class);
+                selectedMentorHelper = helper;
+            }
+        }
+    }
+
+    private ArrayList<String> subjectList = new ArrayList<>();
+
+    private void setSubjectRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewSubjects.setLayoutManager(linearLayoutManager);
+        SubjectListAdapter adapter = new SubjectListAdapter(getActivity(), bAddMentor, subjectList);
+
+        subjectList.addAll(selectedMentorHelper.getSubjects());
+        recyclerViewSubjects.setAdapter(adapter);
+        commonListRef = Reference.superRef(RMAP.list);
+        viewModel = new ViewModelProvider(getActivity()).get(CommonDataViewModel.class);
+        viewModel.getCommonMutableLiveData(commonListRef).observe(getViewLifecycleOwner(),
+                new Observer<CommonDataModel>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onChanged(CommonDataModel commonDataModel) {
+                        adapter.setDataModel(commonDataModel);
+                        commonDataModel.getAll_subjects();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override
@@ -128,11 +162,13 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         super.onViewCreated(view, savedInstanceState);
         bUpdateImage.setVisibility(View.GONE);
 
+        setSubjectRecyclerView();
+
         if (from == 2) {
             bSubmit.setText("Update");
             sCAT = selectedMentorHelper.getCategory();
             //eQualification.setText(selectedMentorHelper.get);
-            sImagelink=selectedMentorHelper.getImage();
+            sImagelink = selectedMentorHelper.getImage();
             eName.setText(selectedMentorHelper.getName());
             tCategory.setText("Category: " + selectedMentorHelper.getCategory());
             new ImageSetterGlide().defaultImg(getContext(),
@@ -157,7 +193,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         iBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -203,6 +239,33 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                 updateImage();
             }
         });
+
+       /* tAddMentor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Gson gson = new Gson();
+                String myJson = gson.toJson(selectedMentorHelper);
+                Bundle bundle = new Bundle();
+                bundle.putString("helper",myJson);
+                bundle.putInt("from", 1);
+                FragmentManager manager = ((AppCompatActivity)getActivity())
+                        .getSupportFragmentManager();
+                FragmentTransaction fragmenttransaction =
+                        manager.beginTransaction();
+
+                SubjectsList frag = new SubjectsList();
+                frag.setArguments(bundle);
+                fragmenttransaction.replace(android.R.id.content, frag)
+                        .addToBackStack(frag.TAG);
+                fragmenttransaction.commit();
+                frag.onSubjectClick(new SubjectsList.OnSubjectClickListener() {
+                    @Override
+                    public void onSubjectClick(SubjectHelper helper) {
+                        Log.e(TAG, "onSubjectClick: " );
+                    }
+                });
+            }
+        });*/
 
     }
 
@@ -281,7 +344,9 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
 
         }
     }
+
     StorageReference storageReference;
+
     private void imageUploader(Uri uri, File compressedImage) {
         Log.d(TAG, "imageUploader: ");
         //Get Image Size
@@ -297,11 +362,11 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                 .setCustomMetadata(kMap.width, String.valueOf(imageWidth))
                 .setCustomMetadata(kMap.height, String.valueOf(imageHeight)).build();
 
-        if(selectedMentorHelper!=null){
+        if (selectedMentorHelper != null) {
             storageReference = Reference.getMentorImageRef().
                     child(selectedMentorHelper.getMentor_id() + ".webp");
-        }else {
-             storageReference = Reference.getMentorImageRef().
+        } else {
+            storageReference = Reference.getMentorImageRef().
                     child(new Date().getTime() + ".webp");
         }
         bSubmit.setEnabled(false);
@@ -337,7 +402,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         Log.e(TAG, "onActivityResult: ");
 
         if (requestCode == PICK_IMAGE) {
-            if(data!=null){
+            if (data != null) {
                 bUpdateImage.setVisibility(View.VISIBLE);
                 bSubmit.setEnabled(false);
                 resultUri = data.getData();
@@ -363,14 +428,14 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
 
 
     private void updateData() {
-        Log.e(TAG, "updateData: " +sImagelink);
+        Log.e(TAG, "updateData: " + sImagelink);
         String mentor_id = selectedMentorHelper.getMentor_id();
         Map map = new HashMap();
         map.put(kMap.name, sName);
         map.put(kMap.mentor_id, mentor_id);
         map.put(kMap.image, sImagelink);
         map.put(kMap.category, sCAT);
-
+        map.put(kMap.subjects, subjectList);
         ArrayList<MentorHelper> list = MyStore.getCommonData().getMentors();
         int position = 0;
         for (MentorHelper mentorHelper : list) {
@@ -392,7 +457,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            dismiss();
+                            getActivity().getSupportFragmentManager().popBackStack();
                             Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -401,7 +466,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
     }
 
     private void writeData() {
-        Log.e(TAG, "writeData: " );
+        Log.e(TAG, "writeData: ");
         DocumentReference documentReference = FirebaseFirestore.
                 getInstance().collection("df").document();
         String mentor_id = documentReference.getId();
@@ -410,6 +475,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
         map.put(kMap.mentor_id, mentor_id);
         map.put(kMap.image, sImagelink);
         map.put(kMap.category, sCAT);
+        map.put(kMap.subjects, subjectList);
 
         Map map1 = new HashMap();
         map1.put(kMap.mentors, FieldValue.arrayUnion(map));
@@ -418,7 +484,7 @@ public class Dialog_Add_Mentor extends DialogFragment implements AdapterView.OnI
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            dismiss();
+                            getActivity().onBackPressed();
                         }
                     }
                 }

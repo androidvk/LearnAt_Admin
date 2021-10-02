@@ -67,3 +67,6 @@
             }
         
         =======================
+
+        // sorting in array list
+                list.sort((Comparator.comparing(SubjectHelper::getCategory)));

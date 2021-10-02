@@ -1,5 +1,6 @@
 package com.coremacasia.learnatadmin.dialogs;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,18 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.DialogSubjectSelectorBinding;
 import com.coremacasia.learnatadmin.helpers.SubjectHelper;
-import com.coremacasia.learnatadmin.adapter.SubjectsAdapter;
+import com.coremacasia.learnatadmin.adapter.SubjectsCategoryAdapter;
 import com.coremacasia.learnatadmin.utility.MyStore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class Dialog_Selector_Subject extends DialogFragment {
     public static final String TAG = "DialogSubjectSelector";
     private static String CAT;
+    private static ArrayList<String> selectedSubjectList;
     DialogSubjectSelectorBinding binding;
 
-    public static Dialog_Selector_Subject newInstance(String CAT) {
+    public static Dialog_Selector_Subject newInstance(String CAT, ArrayList<String> selectedSubjectList) {
         Dialog_Selector_Subject.CAT = CAT;
+        Dialog_Selector_Subject.selectedSubjectList = selectedSubjectList;
 
         Bundle args = new Bundle();
 
@@ -59,6 +65,7 @@ public class Dialog_Selector_Subject extends DialogFragment {
         this.listener=listener;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull @NotNull View view,
                               @Nullable @org.jetbrains.annotations.Nullable
@@ -68,7 +75,7 @@ public class Dialog_Selector_Subject extends DialogFragment {
         GridLayoutManager layoutManager=new GridLayoutManager(getActivity(),2);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
 
-        SubjectsAdapter adapter=new SubjectsAdapter(getActivity(),1);
+        SubjectsCategoryAdapter adapter=new SubjectsCategoryAdapter(getActivity(),1, selectedSubjectList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.setCategory(CAT);
@@ -77,7 +84,7 @@ public class Dialog_Selector_Subject extends DialogFragment {
         adapter.getFilter().filter("");
         adapter.notifyDataSetChanged();
 
-        adapter.onSubjectClick(new SubjectsAdapter.OnSubjectClickListener() {
+        adapter.onSubjectClick(new SubjectsCategoryAdapter.OnSubjectClickListener() {
             @Override
             public void onSubjectClick(SubjectHelper helper) {
                 listener.onSubjectClick(helper);

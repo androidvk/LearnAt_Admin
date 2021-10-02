@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.R;
+import com.coremacasia.learnatadmin.activities.LectureList;
 import com.coremacasia.learnatadmin.commons.all_courses.CourseModel;
 import com.coremacasia.learnatadmin.databinding.FragmentCoursesBinding;
 import com.coremacasia.learnatadmin.helpers.CourseHelper;
@@ -20,6 +22,7 @@ import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Course;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
+import com.google.gson.Gson;
 
 
 import java.text.SimpleDateFormat;
@@ -97,7 +100,16 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // listener.onCourseClick(helper);
+                if(listener!=null){
+                    listener.onCourseClick(helper);
+                }else {
+                    Gson gson = new Gson();
+                    String gSonHelper = gson.toJson(helper);
+                    holder.context.startActivity(new Intent(
+                            holder.context, LectureList.class)
+                            .putExtra("helper", gSonHelper));
+                }
+
             }
         });
 

@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".activities.TrendingFrag">
+    tools:context=".activities.TrendingSelectorFrag">
 
 
     <TextView

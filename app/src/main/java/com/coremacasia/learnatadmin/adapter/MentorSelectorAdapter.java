@@ -10,19 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
-import com.coremacasia.learnatadmin.databinding.FragmentMentorBinding;
 import com.coremacasia.learnatadmin.databinding.ListMentorSelectorBinding;
-import com.coremacasia.learnatadmin.databinding.ListMentorsBinding;
-import com.coremacasia.learnatadmin.databinding.ListUpcomingCoursesBinding;
-import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
 import com.coremacasia.learnatadmin.dialogs.Dialog_Mentor_Search_list;
-import com.coremacasia.learnatadmin.dialogs.Dialog_Selector_Course;
-import com.coremacasia.learnatadmin.helpers.CourseHelper;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
 import com.coremacasia.learnatadmin.utility.MyStore;
@@ -121,7 +114,7 @@ public class MentorSelectorAdapter extends RecyclerView.Adapter<MentorSelectorAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String mentor_id = list.get(position);
+        String mentor_id = list.get(holder.getAbsoluteAdapterPosition());
         for (MentorHelper helper : MyStore.getCommonData().getMentors()) {
             if (helper.getMentor_id().equals(mentor_id)) {
 

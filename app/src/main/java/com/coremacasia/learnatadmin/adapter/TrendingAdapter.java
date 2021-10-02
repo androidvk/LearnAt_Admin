@@ -54,15 +54,15 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder
 
     public TrendingAdapter(Context activity) {
         this.activity = activity;
-        Log.e(TAG, "UpcomingAdapter: ");
+        Log.e(TAG, "TrendingAdapter: ");
     }
 
     public void setDataModel(CommonDataModel dataModel, String CAT,
                              TextView tAdd, CircularProgressButton tSave, String FROM) {
         this.dataModel = dataModel;
-        if(FROM.equals("trending")){
+        if (FROM.equals("trending")) {
             list = dataModel.getTrending();
-        }else if (FROM.equals("popular")){
+        } else if (FROM.equals("popular")) {
             list = dataModel.getPopular();
         }
 
@@ -97,18 +97,18 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Holder
 
     private void saveData() {
 
-        DocumentReference reference= Reference.superRef(CAT);
-        Map map=new HashMap();
-        if(FROM.equals("trending")){
-            map.put(kMap.trending,list);
-        }else if (FROM.equals("popular")){
-            map.put(kMap.popular,list);
+        DocumentReference reference = Reference.superRef(CAT);
+        Map map = new HashMap();
+        if (FROM.equals("trending")) {
+            map.put(kMap.trending, list);
+        } else if (FROM.equals("popular")) {
+            map.put(kMap.popular, list);
         }
 
         reference.set(map, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isComplete()){
+                if (task.isComplete()) {
                     tSave.revertAnimation();
                 }
             }

@@ -26,10 +26,10 @@ import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TrendingFrag#newInstance} factory method to
+ * Use the {@link TrendingSelectorFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrendingFrag extends Fragment {
+public class TrendingSelectorFrag extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,7 +40,7 @@ public class TrendingFrag extends Fragment {
     private String mParam1;
     private String mParam2;
     private String CAT,FROM;
-    public TrendingFrag() {
+    public TrendingSelectorFrag() {
         // Required empty public constructor
     }
 
@@ -53,8 +53,8 @@ public class TrendingFrag extends Fragment {
      * @return A new instance of fragment Upcoming.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrendingFrag newInstance(String param1, String param2) {
-        TrendingFrag fragment = new TrendingFrag();
+    public static TrendingSelectorFrag newInstance(String param1, String param2) {
+        TrendingSelectorFrag fragment = new TrendingSelectorFrag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -2,9 +2,11 @@ package com.coremacasia.learnatadmin.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coremacasia.learnatadmin.commons.CommonDataModel;
-import com.coremacasia.learnatadmin.databinding.FragmentMentorBinding;
 import com.coremacasia.learnatadmin.databinding.ListMentorsBinding;
-import com.coremacasia.learnatadmin.dialogs.Dialog_Add_Mentor;
+import com.coremacasia.learnatadmin.dialogs.Fragment_Add_Mentor;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;import com.coremacasia.learnatadmin.utility.ImageSetterGlide;
+import com.google.gson.Gson;
 
 
 import java.util.ArrayList;
@@ -70,13 +72,23 @@ public class MentorsAdapter extends RecyclerView.Adapter<MentorsAdapter.ViewHold
                 if(from==1){
                     onMentorClickListener.onMentorClick(helper);
                 }else {
+                    Gson gson = new Gson();
+                    String myJson = gson.toJson(helper);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("from",2);
+                    bundle.putString("helper",myJson);
                     FragmentManager manager = ((AppCompatActivity) activity)
                             .getSupportFragmentManager();
-                    Dialog_Add_Mentor dialog_add_mentor =
-                            Dialog_Add_Mentor.newInstance(2,helper);
-                    dialog_add_mentor.show(manager,
-                            Dialog_Add_Mentor.TAG);
 
+                    FragmentTransaction fragmenttransaction =
+                            manager.beginTransaction();
+
+
+                    Fragment_Add_Mentor frag = new Fragment_Add_Mentor();
+                    frag.setArguments(bundle);
+                    fragmenttransaction.replace(android.R.id.content, frag)
+                            .addToBackStack(frag.TAG);
+                    fragmenttransaction.commit();
                 }
 
             }

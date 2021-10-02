@@ -242,4 +242,5 @@ public class kMap {
     public static String trending="trending";
     public static String popular="popular";
 
+    public static String subjects="subjects";
 }

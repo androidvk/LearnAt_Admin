@@ -407,7 +407,9 @@ public class Dialog_Add_Course extends DialogFragment {
         tSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog_Selector_Subject dialog = Dialog_Selector_Subject.newInstance(CAT);
+                ArrayList<String> selectedSubjectList=new ArrayList<>();
+                selectedSubjectList.add(selectedSubjectHelper.getSubject_id());
+                Dialog_Selector_Subject dialog = Dialog_Selector_Subject.newInstance(CAT,selectedSubjectList);
                 dialog.show(getActivity().getSupportFragmentManager(),
                         Dialog_Selector_Subject.TAG);
                 dialog.onSubjectClick(new Dialog_Selector_Subject.OnSubjectClickListener() {
