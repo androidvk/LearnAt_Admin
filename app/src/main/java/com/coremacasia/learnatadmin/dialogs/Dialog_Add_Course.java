@@ -19,12 +19,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
+import com.coremacasia.learnatadmin.adapter.CoursePricingAdapter;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddCourseBinding;
 import com.coremacasia.learnatadmin.helpers.CourseHelper;
+import com.coremacasia.learnatadmin.helpers.CoursePriceHelper;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
@@ -77,14 +81,15 @@ public class Dialog_Add_Course extends DialogFragment {
     private CategoryViewModel categoryViewModel;
     private TextView tDetails, tMentor, tSubject, tStartDate;
     private Spinner spLanguage;
-    private EditText ePrice;
     private SubjectHelper selectedSubjectHelper;
     private MentorHelper selectedMentorHelper;
     private View vBack;
     private Calendar myCalendar;
     private String selectedLanguage;
-    private String sPrice;
     private Date selectedDate;
+    private RecyclerView recyclerViewPricing;
+    private Button bAddPrice;
+
     public static Dialog_Add_Course newInstance(String CAT1, CourseHelper helper1) {
         CAT = CAT1;
         helper = helper1;
@@ -114,10 +119,9 @@ public class Dialog_Add_Course extends DialogFragment {
         vBack = binding.imageView7;
         tStartDate = binding.textView49;
         spLanguage = binding.spinner;
-        ePrice = binding.editTextNumber;
-
+        recyclerViewPricing = binding.recyclerView4;
+        bAddPrice = binding.button19;
         myCalendar = Calendar.getInstance();
-        tStartDate.setVisibility(View.GONE);
         return binding.getRoot();
 
     }
@@ -135,6 +139,7 @@ public class Dialog_Add_Course extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         mentorSelector();
         subjectSpinnerConfig();
+        setCoursePricingRecyclerView();
         categoryRef = Reference.superRef(CAT);
         //For Updating Course
         if (helper != null) {
@@ -150,9 +155,12 @@ public class Dialog_Add_Course extends DialogFragment {
             sLive.setChecked(helper.isIs_live());
             sIndividual.setChecked(helper.isIs_individual());
             sVisible.setChecked(helper.isIs_visible());
-            if(helper.getStart_date()!=null){
-                selectedDate=helper.getStart_date();
-                ePrice.setText(helper.getCourse_price());
+            if (helper.getStart_date() != null) {
+
+                String myFormat = "dd/MM/yy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                selectedDate = myCalendar.getTime();
+                tStartDate.setText("StartDate: "+sdf.format(selectedDate));
             }
 
             for (SubjectHelper subjectHelper : MyStore.getCommonData().getAll_subjects()) {
@@ -187,9 +195,9 @@ public class Dialog_Add_Course extends DialogFragment {
                 sTitle = eTitle.getText().toString().trim();
                 sDescription = eDescription.getText().toString().trim();
                 sThumbnail = eThumbnail.getText().toString().trim();
-                sPrice=ePrice.getText().toString().trim();
+
                 if (!sThumbnail.equals("") && !sDescription.equals("")
-                        && !sTitle.equals("") && !sPrice.equals("")) {
+                        && !sTitle.equals("") ) {
                     if (helper == null) {
                         writeData();
                     } else {
@@ -208,17 +216,20 @@ public class Dialog_Add_Course extends DialogFragment {
             }
         });
 
-
-        sLive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tStartDate.setVisibility(View.VISIBLE);
-                } else tStartDate.setVisibility(View.GONE);
-            }
-        });
         languageSpinner();
         datePickerDialog();
+
+    }
+
+    private void setCoursePricingRecyclerView() {
+
+        ArrayList<CoursePriceHelper> list=new ArrayList<CoursePriceHelper>();
+        //list=helper.getPrice_duration();
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerViewPricing.setLayoutManager(layoutManager);
+        CoursePricingAdapter adapter=new CoursePricingAdapter(list,bAddPrice,getActivity());
+        recyclerViewPricing.setAdapter(adapter);
 
     }
 
@@ -237,8 +248,8 @@ public class Dialog_Add_Course extends DialogFragment {
 
                 String myFormat = "dd/MM/yy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                selectedDate=myCalendar.getTime();
-                tStartDate.setText(sdf.format(myCalendar.getTime()));
+                selectedDate = myCalendar.getTime();
+                tStartDate.setText("StartDate: "+sdf.format(myCalendar.getTime()));
             }
 
         };
@@ -293,8 +304,7 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.is_individual, sIndividual.isChecked());
         map.put(kMap.is_visible, sVisible.isChecked());
         map.put(kMap.start_date, selectedDate);
-        map.put(kMap.course_lang, selectedLanguage  );
-        map.put(kMap.course_price,sPrice);
+        map.put(kMap.course_lang, selectedLanguage);
 
 
         ArrayList<CourseHelper> list = MyStore.getCourseData().getAll_courses();
@@ -348,6 +358,7 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.title, sTitle);
         map.put(kMap.desc, sDescription);
         map.put(kMap.category_id, CAT);
+        map.put(kMap.duration, 1);
         map.put(kMap.course_id, course_id);
         map.put(kMap.mentor_id, selectedMentorHelper.getMentor_id());
         map.put(kMap.subject_id, selectedSubjectHelper.getSubject_id());
@@ -355,8 +366,7 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.is_individual, sIndividual.isChecked());
         map.put(kMap.is_visible, sVisible.isChecked());
         map.put(kMap.start_date, selectedDate);
-        map.put(kMap.course_lang, selectedLanguage  );
-        map.put(kMap.course_price,sPrice);
+        map.put(kMap.course_lang, selectedLanguage);
 
         Map map1 = new HashMap();
         map1.put(RMAP.all_courses, FieldValue.arrayUnion(map));
@@ -407,9 +417,9 @@ public class Dialog_Add_Course extends DialogFragment {
         tSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> selectedSubjectList=new ArrayList<>();
+                ArrayList<String> selectedSubjectList = new ArrayList<>();
                 selectedSubjectList.add(selectedSubjectHelper.getSubject_id());
-                Dialog_Selector_Subject dialog = Dialog_Selector_Subject.newInstance(CAT,selectedSubjectList);
+                Dialog_Selector_Subject dialog = Dialog_Selector_Subject.newInstance(CAT, selectedSubjectList);
                 dialog.show(getActivity().getSupportFragmentManager(),
                         Dialog_Selector_Subject.TAG);
                 dialog.onSubjectClick(new Dialog_Selector_Subject.OnSubjectClickListener() {

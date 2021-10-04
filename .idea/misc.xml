@@ -7,8 +7,9 @@
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/drawable-mdpi/bkg_mentor_title.xml" value="0.20185185185185187" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/drawable-mdpi/outline_favorite_24.xml" value="0.20185185185185187" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/activity_cat_details.xml" value="0.4" />
-        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/dialog_add_course.xml" value="0.18425925925925926" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/dialog_add_course.xml" value="0.536" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/dialog_add_mentor.xml" value="0.5234521575984991" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/dialog_course_price_entry.xml" value="0.264" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_courses.xml" value="0.4" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_mentor.xml" value="0.1814814814814815" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_mentor_list.xml" value="0.1814814814814815" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_subjects_list.xml" value="0.23703703703703705" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_trending.xml" value="0.17777777777777778" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/fragment_upcoming.xml" value="0.18425925925925926" />
+        <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/list_course_price.xml" value="0.4" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/list_lecture.xml" value="0.24166666666666667" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/list_mentor_selector.xml" value="0.259375" />
         <entry key="..\:/Android/LearnAtAdmin/app/src/main/res/layout/list_mentors.xml" value="0.259375" />
