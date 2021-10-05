@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,18 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
 import com.coremacasia.learnatadmin.databinding.ListCoursePriceBinding;
-import com.coremacasia.learnatadmin.databinding.ListNamesBinding;
-import com.coremacasia.learnatadmin.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.helpers.CoursePriceHelper;
+import com.coremacasia.learnatadmin.helpers.PriceDurationHelper;
 
 import java.util.ArrayList;
 
-public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdapter.Holder> {
-    private ArrayList<CoursePriceHelper> list;
+public class PriceDurationAdapter extends RecyclerView.Adapter<PriceDurationAdapter.Holder> {
+    private ArrayList<PriceDurationHelper> list;
     private Button bAddPrice;
     private FragmentActivity activity;
 
-    public CoursePricingAdapter(ArrayList<CoursePriceHelper> list, Button bAddPrice,
+    public PriceDurationAdapter(ArrayList<PriceDurationHelper> list, Button bAddPrice,
                                 FragmentActivity activity) {
         this.list = list;
         this.bAddPrice = bAddPrice;
@@ -54,10 +53,17 @@ public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdap
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        CoursePriceHelper helper = list.get(holder.getAbsoluteAdapterPosition());
+        PriceDurationHelper helper = list.get(holder.getAbsoluteAdapterPosition());
 
         holder.tPrice.setText("Rs."+helper.getPrice());
         holder.tDuration.setText(helper.getDuration()+" "+helper.getDuration_unit());
+        holder.iCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list.remove(holder.getAbsoluteAdapterPosition());
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -93,6 +99,10 @@ public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdap
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            getWindow().clearFlags(WindowManager
+                    .LayoutParams.FLAG_NOT_FOCUSABLE
+                    |WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
             setContentView(R.layout.dialog_course_price_entry);
             ePrice = findViewById(R.id.editTextTextPersonName9);
             eDuration = findViewById(R.id.editTextTextPersonName15);
@@ -115,7 +125,7 @@ public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdap
             String duration = eDuration.getText().toString().trim();
             Log.e(TAG, "getInputs: " + durationUnit);
             if (!price.equals("") & !duration.equals("")) {
-                CoursePriceHelper helper=new CoursePriceHelper(durationUnit,price,duration);
+                PriceDurationHelper helper=new PriceDurationHelper(durationUnit,price,duration);
                 list.add(helper);
                 notifyDataSetChanged();
                 dismiss();

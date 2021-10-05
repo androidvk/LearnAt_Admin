@@ -1,10 +1,14 @@
 package com.coremacasia.learnatadmin.helpers;
 
-public class CoursePriceHelper {
+public class PriceDurationHelper {
     private String duration_unit, price, duration;
 
     public String getDuration_unit() {
         return duration_unit;
+    }
+
+    public PriceDurationHelper() {
+
     }
 
     public String getPrice() {
@@ -15,7 +19,7 @@ public class CoursePriceHelper {
         return duration;
     }
 
-    public CoursePriceHelper(String duration_unit, String price, String duration) {
+    public PriceDurationHelper(String duration_unit, String price, String duration) {
         this.duration_unit = duration_unit;
         this.price = price;
         this.duration = duration;

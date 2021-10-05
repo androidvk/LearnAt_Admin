@@ -243,4 +243,6 @@ public class kMap {
     public static String popular="popular";
 
     public static String subjects="subjects";
+    public static String price_duration="price_duration";
+    public static String with_mentor="with_mentor";
 }

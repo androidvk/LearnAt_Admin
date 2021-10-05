@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,12 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.coremacasia.learnatadmin.R;
-import com.coremacasia.learnatadmin.adapter.CoursePricingAdapter;
+import com.coremacasia.learnatadmin.adapter.PriceDurationAdapter;
 import com.coremacasia.learnatadmin.commons.CommonDataViewModel;
 import com.coremacasia.learnatadmin.commons.comp_exam.CategoryViewModel;
 import com.coremacasia.learnatadmin.databinding.DialogAddCourseBinding;
 import com.coremacasia.learnatadmin.helpers.CourseHelper;
-import com.coremacasia.learnatadmin.helpers.CoursePriceHelper;
+import com.coremacasia.learnatadmin.helpers.PriceDurationHelper;
 import com.coremacasia.learnatadmin.helpers.MentorHelper;
 import com.coremacasia.learnatadmin.helpers.SubjectHelper;
 import com.coremacasia.learnatadmin.utility.MyStore;
@@ -66,7 +65,7 @@ public class Dialog_Add_Course extends DialogFragment {
     private DialogAddCourseBinding binding;
     private EditText eTitle, eDescription, eThumbnail;
     private Spinner spSubject;
-    private SwitchMaterial sIndividual, sLive, sVisible;
+    private SwitchMaterial sIndividual, sLive, sVisible,sWithTeacher;
     private ImageView imageView;
     private Button bSubmit;
     private String sTitle, sDescription, sThumbnail;
@@ -121,6 +120,7 @@ public class Dialog_Add_Course extends DialogFragment {
         spLanguage = binding.spinner;
         recyclerViewPricing = binding.recyclerView4;
         bAddPrice = binding.button19;
+        sWithTeacher=binding.switch4;
         myCalendar = Calendar.getInstance();
         return binding.getRoot();
 
@@ -154,6 +154,7 @@ public class Dialog_Add_Course extends DialogFragment {
             eDescription.setText(helper.getDesc());
             sLive.setChecked(helper.isIs_live());
             sIndividual.setChecked(helper.isIs_individual());
+            sWithTeacher.setChecked(helper.isWith_mentor());
             sVisible.setChecked(helper.isIs_visible());
             if (helper.getStart_date() != null) {
 
@@ -220,15 +221,13 @@ public class Dialog_Add_Course extends DialogFragment {
         datePickerDialog();
 
     }
-
+   private ArrayList<PriceDurationHelper> price_durationList =new ArrayList<>();
     private void setCoursePricingRecyclerView() {
-
-        ArrayList<CoursePriceHelper> list=new ArrayList<CoursePriceHelper>();
-        //list=helper.getPrice_duration();
+        price_durationList =helper.getPrice_duration();
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerViewPricing.setLayoutManager(layoutManager);
-        CoursePricingAdapter adapter=new CoursePricingAdapter(list,bAddPrice,getActivity());
+        PriceDurationAdapter adapter=new PriceDurationAdapter(price_durationList,bAddPrice,getActivity());
         recyclerViewPricing.setAdapter(adapter);
 
     }
@@ -301,11 +300,12 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.mentor_id, selectedMentorHelper.getMentor_id());
         map.put(kMap.subject_id, selectedSubjectHelper.getSubject_id());
         map.put(kMap.is_live, sLive.isChecked());
+        map.put(kMap.with_mentor,sWithTeacher.isChecked());
         map.put(kMap.is_individual, sIndividual.isChecked());
         map.put(kMap.is_visible, sVisible.isChecked());
         map.put(kMap.start_date, selectedDate);
         map.put(kMap.course_lang, selectedLanguage);
-
+        map.put(kMap.price_duration, price_durationList);
 
         ArrayList<CourseHelper> list = MyStore.getCourseData().getAll_courses();
         int position = 0;
@@ -358,7 +358,6 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.title, sTitle);
         map.put(kMap.desc, sDescription);
         map.put(kMap.category_id, CAT);
-        map.put(kMap.duration, 1);
         map.put(kMap.course_id, course_id);
         map.put(kMap.mentor_id, selectedMentorHelper.getMentor_id());
         map.put(kMap.subject_id, selectedSubjectHelper.getSubject_id());
@@ -367,6 +366,8 @@ public class Dialog_Add_Course extends DialogFragment {
         map.put(kMap.is_visible, sVisible.isChecked());
         map.put(kMap.start_date, selectedDate);
         map.put(kMap.course_lang, selectedLanguage);
+        map.put(kMap.with_mentor,sWithTeacher.isChecked());
+        map.put(kMap.price_duration, price_durationList);
 
         Map map1 = new HashMap();
         map1.put(RMAP.all_courses, FieldValue.arrayUnion(map));

@@ -14,11 +14,11 @@ public class CourseHelper {
     private String course_price, course_lang;
     private Date start_date;
 
-    public ArrayList<CoursePriceHelper> getPrice_duration() {
+    public ArrayList<PriceDurationHelper> getPrice_duration() {
         return price_duration;
     }
 
-    private ArrayList<CoursePriceHelper> price_duration=new ArrayList<>();
+    private ArrayList<PriceDurationHelper> price_duration=new ArrayList<>();
 
     public String getCourse_price() {
         return course_price;
@@ -49,7 +49,15 @@ public class CourseHelper {
     }
 
     private String category_id;
-    private boolean is_individual, is_live, is_visible;
+    private boolean is_individual;
+    private boolean is_live;
+    private boolean is_visible;
+
+    public boolean isWith_mentor() {
+        return with_mentor;
+    }
+
+    private boolean with_mentor;
 
     public String getAdded_by() {
         return added_by;
