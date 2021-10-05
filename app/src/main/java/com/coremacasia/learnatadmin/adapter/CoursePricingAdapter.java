@@ -3,12 +3,14 @@ package com.coremacasia.learnatadmin.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -52,7 +54,10 @@ public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdap
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        CoursePriceHelper helper=list.get(holder.getAbsoluteAdapterPosition());
+        CoursePriceHelper helper = list.get(holder.getAbsoluteAdapterPosition());
+
+        holder.tPrice.setText("Rs."+helper.getPrice());
+        holder.tDuration.setText(helper.getDuration()+" "+helper.getDuration_unit());
     }
 
     @Override
@@ -62,26 +67,71 @@ public class CoursePricingAdapter extends RecyclerView.Adapter<CoursePricingAdap
 
     public class Holder extends RecyclerView.ViewHolder {
         private Context context;
-        private TextView tPrice,tDuration;
+        private TextView tPrice, tDuration;
         private ImageView iCancel;
+
         public Holder(@NonNull ListCoursePriceBinding itemView) {
             super(itemView.getRoot());
-            tPrice=itemView.textView62;
-            tDuration=itemView.textView63;
-            iCancel=itemView.imageView18;
+            tPrice = itemView.textView62;
+            tDuration = itemView.textView63;
+            iCancel = itemView.imageView18;
         }
     }
-    class CourseFillDialog extends AlertDialog{
+
+    class CourseFillDialog extends AlertDialog {
         private static final String TAG = "CourseFillDialog";
+
         protected CourseFillDialog(Context context) {
             super(context);
         }
-        private EditText ePrice,eDuration;
+
+        private EditText ePrice, eDuration;
         private RadioGroup radioGroup;
+        private Button bAdd;
+        private String durationUnit;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_course_price_entry);
+            ePrice = findViewById(R.id.editTextTextPersonName9);
+            eDuration = findViewById(R.id.editTextTextPersonName15);
+            radioGroup = findViewById(R.id.radio);
+            bAdd = findViewById(R.id.button20);
+            RadioButton rb1 = findViewById(R.id.rbmoths);
+            getRadioValue();
+            rb1.setChecked(true);
+
+            bAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getInputs();
+                }
+            });
+        }
+
+        private void getInputs() {
+            String price = ePrice.getText().toString().trim();
+            String duration = eDuration.getText().toString().trim();
+            Log.e(TAG, "getInputs: " + durationUnit);
+            if (!price.equals("") & !duration.equals("")) {
+                CoursePriceHelper helper=new CoursePriceHelper(durationUnit,price,duration);
+                list.add(helper);
+                notifyDataSetChanged();
+                dismiss();
+                eDuration.setText("");
+                ePrice.setText("");
+            }
+        }
+
+        private void getRadioValue() {
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                    durationUnit = rb.getText().toString();
+                }
+            });
         }
     }
 }
